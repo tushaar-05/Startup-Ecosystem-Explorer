@@ -9,9 +9,9 @@ The target audience includes aspiring entrepreneurs researching markets, develop
 ## API Used
 Hacker News API (by Y Combinator / Firebase)
 
-Base URL: https://hacker-news.firebaseio.com/v0/
-Documentation: https://github.com/HackerNews/API
-Authentication: None required — fully public and free
+- Base URL: https://hacker-news.firebaseio.com/v0/
+- Documentation: https://github.com/HackerNews/API
+- Authentication: None required — fully public and free
 
 
 ## Features Planned
@@ -47,58 +47,25 @@ Authentication: None required — fully public and free
 No frameworks or build tools are used. This is a pure HTML/CSS/JS project.
 
 
-## Project Structure
-startup-ecosystem-explorer/
-│
-├── index.html          ← Landing page (intro + login/signup CTA)
-├── login.html          ← Login page
-├── signup.html         ← Signup page
-├── dashboard.html      ← Main app dashboard
-├── saved.html          ← Dedicated page showing only the saved startups
-├── trends.html         ← Data insights page
-├── compare.html        ← Side-by-side comparison view
-│
-├── css/
-│   ├── global.css      ← Shared styles used across all pages
-│   ├── dashboard.css   ← Dashboard-specific styles
-│   ├── auth.css        ← Login and signup page styles
-│   └── landing.css     ← Landing page styles
-│
-├── js/
-│   ├── api.js          ← All Hacker News API fetch logic
-│   ├── render.js       ← DOM rendering functions
-│   ├── filters.js      ← Search, filter, sort logic (all HOFs)
-│   ├── auth.js         ← Handles login and signup logic
-│   ├── compare.js      ← Logic for the compare feature
-│   ├── saved.js        ← Reads bookmarked startups from localStorage and renders them on the saved page.
-│   ├── storage.js      ← localStorage helpers (bookmarks, preferences)
-│   ├── trends.js       ← Renders the charts and stats on trends.html.
-│   └── utils.js        ← Small reusable helper functions used across multiple files
-│
-└── README.md
-
 ## Setup and Running
 This project requires no installation, build step, or server. It runs entirely in the browser.
-Steps to run locally:
 
-### Clone the repository:
+### Steps to run locally:
+-  Clone the repository:
 bash   git clone https://github.com/tushaar-05/startup-ecosystem-explorer.git
-
-### Navigate into the project folder:
+-  Navigate into the project folder:
 bash   cd startup-ecosystem-explorer
-
-### Open index.html in your browser:
-
-### Double-click the file in your file explorer, or Use the Live Server extension in VS Code (recommended for auto-reload)
+-  Open index.html in your browser:
+-  Double-click the file in your file explorer, or Use the Live Server extension in VS Code (recommended for auto-reload)
 
 No API key is needed. The Hacker News API is public and requires no authentication.
 
 ## Note: The app fetches live data from the Hacker News API on load. An internet connection is required for the data to appear.
 
 
-Deployment
+## Deployment
 The final project will be deployed using vercel and the live link will be added here once available.
 Live URL: coming soon
 
-Author
+# Author
 Tushar R Singh — Individual Project, 2025
