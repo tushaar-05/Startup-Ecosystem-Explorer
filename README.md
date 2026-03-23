@@ -3,15 +3,21 @@ A web application to discover, search, filter, and analyse startups from the Y C
 
 ## Purpose
 The startup world moves fast. New companies are launched every week, and keeping track of what is being built — across sectors, funding batches, and traction levels — is difficult without a dedicated tool.
-Startup Ecosystem Explorer solves this by turning raw Hacker News data into a clean, interactive startup directory. Users can search for startups by keyword, filter by industry sector or YC batch, sort by score or recency, and bookmark companies they want to revisit — all in one place.
+Startup Ecosystem Explorer solves this by turning raw Hacker News data into a clean, interactive startup directory. Users can search for startups by keyword, filter by industry sector or YC batch, sort by score or recency, bookmark companies they want to revisit and compare any 2 startups — all in one place.
 The target audience includes aspiring entrepreneurs researching markets, developers exploring startup ideas, students studying business and technology, and anyone curious about what is being built in the startup ecosystem right now.
 
 ## API Used
 Hacker News API (by Y Combinator / Firebase)
 
-- Base URL: https://hacker-news.firebaseio.com/v0/
-- Documentation: https://github.com/HackerNews/API
-- Authentication: None required — fully public and free
+Base URL: https://hacker-news.firebaseio.com/v0/
+Documentation: https://github.com/HackerNews/API
+
+Key endpoints used:
+- topstories.json — returns IDs of the top-ranked stories
+- newstories.json — returns IDs of the most recently posted stories
+- item/{id}.json — returns full details of a single story (title, score, time, URL, author)
+
+Authentication: None required — fully public and free
 
 
 ## Features Planned
