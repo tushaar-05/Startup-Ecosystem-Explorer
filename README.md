@@ -9,13 +9,13 @@ The target audience includes aspiring entrepreneurs researching markets, develop
 ## API Used
 Hacker News API (by Y Combinator / Firebase)
 
-Base URL: https://hacker-news.firebaseio.com/v0/
-Documentation: https://github.com/HackerNews/API
+- Base URL: https://hacker-news.firebaseio.com/v0/ 
+- Documentation: https://github.com/HackerNews/API
 
-Key endpoints used:
-- topstories.json — returns IDs of the top-ranked stories
-- newstories.json — returns IDs of the most recently posted stories
-- item/{id}.json — returns full details of a single story (title, score, time, URL, author)
+- Key endpoints used:
+---> topstories.json — returns IDs of the top-ranked stories
+---> newstories.json — returns IDs of the most recently posted stories
+---> item/{id}.json — returns full details of a single story (title, score, time, URL, author)
 
 Authentication: None required — fully public and free
 
