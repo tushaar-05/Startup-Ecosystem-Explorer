@@ -74,4 +74,4 @@ The final project will be deployed using vercel and the live link will be added 
 Live URL: coming soon
 
 # Author
-Tushar R Singh — Individual Project, 2025
+Tushar R Singh — Individual Project, 2026

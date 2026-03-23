@@ -20,7 +20,6 @@
   --font-primary: 'TASA Orbiter', sans-serif;
   --font-secondary: 'Geist Mono', serif;
 }
-
 body{
   background-color: var(--background);
 }
@@ -32,3 +31,16 @@ body{
 .font-primary {
   font-family: var(--font-primary);
 }
+
+
+.hero-bg {
+  background-color: #10100D;
+  background-image:
+    radial-gradient(ellipse 80% 80% at 75% 50%, rgba(255, 74, 24, 0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 80% at 85% 20%, rgba(255,56,0,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 100%, rgba(255,56,0,0.1) 0%, transparent 55%),
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: auto, auto, auto, 48px 48px, 48px 48px;
+}
+
