@@ -13,9 +13,9 @@ Hacker News API (by Y Combinator / Firebase)
 - Documentation: https://github.com/HackerNews/API
 
 - Key endpoints used:
----> topstories.json — returns IDs of the top-ranked stories
----> newstories.json — returns IDs of the most recently posted stories
----> item/{id}.json — returns full details of a single story (title, score, time, URL, author)
+- topstories.json — returns IDs of the top-ranked stories
+- newstories.json — returns IDs of the most recently posted stories
+- item/{id}.json — returns full details of a single story (title, score, time, URL, author)
 
 Authentication: None required — fully public and free
 
