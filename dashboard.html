@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Startup Explorer - Dashboard</title>
+</head>
+<body>
+  <header>
+    <nav class="bg-[#10100D] text-white flex items-center justify-between px-20 py-4 border-b-[1.5px] border-[rgba(255,255,255,0.1)]">
+      <div class="navLeft">
+        <div class="logo">
+          <h1 class="text-[var(--accent)] font-[D] italic font-bold text-[27px]">Startup Explorer</h1>
+        </div>
+      </div>
+
+      <div class="navMiddle">
+        <div>
+          <ul class="flex gap-8 font-secondary font-light -translate-x-[60px]">
+            <li><a class="flex gap-2" href="#"><span><i class="fa-brands fa-space-awesome"></i></span>Explore</a></li>
+            <li><a class="flex gap-2" href="#"><span><i class="fa-solid  fa-bookmark"></i></span>Saved</a></li>
+            <li><a class="flex gap-2" href="#"><span><i class="fa-solid fa-chart-line"></i></span>Trends</a></li>
+            <li><a class="flex gap-2" href="#"><span><i class="fa-solid fa-scale-balanced"></i></span>Compare</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="navRight flex items-center gap-6 text-[20px]">
+        <div id="theme-toggle" class="theme">
+          <a href="">
+            <i class="fas fa-moon"></i>
+          </a>
+        </div>
+        <div class="profile">
+        <a href="">
+          <i class="fa-solid fa-circle-user"></i>
+        </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-bg text-white">
+    <div class="heroSection flex items-center justify-between border-b-[1.5px] border-[rgba(255,255,255,0.1)] gap-8 px-20 py-16 min-h-[160px] overflow-hidden">
+      <div class="relative z-10 flex-shrink-0">
+        <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase text-[#e8341c] bg-[rgba(232,52,28,0.12)] border border-[rgba(232,52,28,0.35)] rounded-full px-3 py-1 mb-3.5">
+          Hello, Tushar!
+        </div>
+        <h1 class="font-primary font-semibold text-[4.1rem] leading-snug text-[#f0ede6] mb-2.5">
+          Discover what's <br> being
+          <span class="font-[D] tracking-tight italic font-bold text-[#e8341c]">built today</span>
+        </h1>
+        <p class="text-[0.95rem] text-[rgba(240,237,230,0.38)]">48 startups across 12 sectors</p>
+      </div>
+
+      <div class="relative z-10 flex items-center gap-4 flex-shrink-0">
+        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Total Startups</span>
+          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">48</span>
+        </div>
+
+        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Saved by You</span>
+          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">4</span>
+        </div>
+
+        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Top Score Today</span>
+          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">928</span>
+        </div>
+
+        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4  min-h-[130px] min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Latest Batch</span>
+          <span class="text-[2.75rem] font-primary font-bold leading-none tracking-tight text-[#f0ede6]">W24</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter pb-[50px]">
+      <div class="filterTop">
+        <div class="flex items-center gap-4 mt-8 px-20 pt-4">
+          <div class="relative">
+            <input size="70" type="text" placeholder="Search startups..." class="search-input h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full pl-10 pr-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50 transition-colors">
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#f0ede6]">
+              <i class="fas fa-search"></i>
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Filter by Sector:</span>
+            <select class="filter-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50 transition-colors">
+              <option value="">All Sectors</option>
+              <option value="ai">AI</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance</option>
+              <option value="social-impact">Social Impact</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Min Score</span>
+            <input value="0" type="range" min="0" max="1000" class="slider">
+            <span class="text-[15px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">0</span>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="filterBottom">
+        <div class="smartFilter flex items-center gap-4 mt-8 px-20 ">
+          <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Smart Filters:</span>
+          <div class="flex items-center gap-3">
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Trending Today</button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Trending Weekly</button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Newly Added</button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Top Scoring Today</button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Top Scoring Weekly</button>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  </section>
+  
+</body>
+</html>
