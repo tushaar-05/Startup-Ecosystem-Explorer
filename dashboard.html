@@ -10,34 +10,41 @@
 </head>
 <body>
   <header>
-    <nav class="bg-[#10100D] text-white flex items-center justify-between px-20 py-4 border-b-[1.5px] border-[rgba(255,255,255,0.1)]">
+    <nav class="bg-[#10100D] text-white flex items-center justify-between px-20 py-4 border-b-[1.5px] border-[rgba(255,255,255,0.1)] sticky top-0 z-50">
       <div class="navLeft">
-        <div class="logo">
-          <h1 class="text-[var(--accent)] font-[D] italic font-bold text-[27px]">Startup Explorer</h1>
-        </div>
+        <h1 class="text-[var(--accent)] italic font-bold text-[27px]" style="font-family:'TASA Orbiter',sans-serif;">
+          Startup Explorer
+        </h1>
       </div>
 
-      <div class="navMiddle">
-        <div>
-          <ul class="flex gap-8 font-secondary font-light -translate-x-[60px]">
-            <li><a class="flex gap-2" href="#"><span><i class="fa-brands fa-space-awesome"></i></span>Explore</a></li>
-            <li><a class="flex gap-2" href="#"><span><i class="fa-solid  fa-bookmark"></i></span>Saved</a></li>
-            <li><a class="flex gap-2" href="#"><span><i class="fa-solid fa-chart-line"></i></span>Trends</a></li>
-            <li><a class="flex gap-2" href="#"><span><i class="fa-solid fa-scale-balanced"></i></span>Compare</a></li>
-          </ul>
-        </div>
+      <div class="navMiddle -translate-x-[40px]">
+        <ul class="flex gap-8 font-light" style="font-family:'Geist Mono',monospace;">
+          <li><a class="flex gap-2 items-center text-white/80 hover:text-white transition-colors text-sm" href="#">
+            <i class="fa-solid fa-compass"></i>Explore
+          </a></li>
+          <li><a class="flex gap-2 items-center text-white/80 hover:text-white transition-colors text-sm" href="saved.html">
+            <i class="fa-solid fa-bookmark"></i>Saved
+          </a></li>
+          <li><a class="flex gap-2 items-center text-white/80 hover:text-white transition-colors text-sm" href="trends.html">
+            <i class="fa-solid fa-chart-line"></i>Trends
+          </a></li>
+          <li><a class="flex gap-2 items-center text-white/80 hover:text-white transition-colors text-sm" href="compare.html">
+            <i class="fa-solid fa-scale-balanced"></i>Compare
+          </a></li>
+        </ul>
       </div>
 
-      <div class="navRight flex items-center gap-6 text-[20px]">
-        <div id="theme-toggle" class="theme">
-          <a href="">
-            <i class="fas fa-moon"></i>
-          </a>
+      <div class="navRight flex items-center gap-5 text-[18px]">
+        <div id="theme-toggle" class="cursor-pointer text-white/70 hover:text-white transition-colors">
+          <i class="fas fa-moon"></i>
         </div>
-        <div class="profile">
-        <a href="">
-          <i class="fa-solid fa-circle-user"></i>
-        </a>
+
+        <div class="flex items-center gap-2.5 cursor-pointer group">
+          <div class="w-8 h-8 rounded-full bg-[#FF3800]/20 border border-[#FF3800]/40 flex items-center justify-center text-[#ff6a20] text-xs font-bold group-hover:border-[#FF3800]/70 transition-colors">
+            TS
+          </div>
+          <span class="text-sm text-white/75 group-hover:text-white transition-colors" style="font-family:'Geist Mono',monospace;">Tushar</span>
+          <i class="fa-solid fa-chevron-down text-xs text-white/40 group-hover:text-white/60 transition-colors"></i>
         </div>
       </div>
     </nav>
@@ -46,52 +53,61 @@
   <section class="hero-bg text-white">
     <div class="heroSection flex items-center justify-between border-b-[1.5px] border-[rgba(255,255,255,0.1)] gap-8 px-20 py-16 min-h-[160px] overflow-hidden">
       <div class="relative z-10 flex-shrink-0">
-        <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase text-[#e8341c] bg-[rgba(232,52,28,0.12)] border border-[rgba(232,52,28,0.35)] rounded-full px-3 py-1 mb-3.5">
-          Hello, Tushar!
-        </div>
-        <h1 class="font-primary font-semibold text-[4.1rem] leading-snug text-[#f0ede6] mb-2.5">
-          Discover what's <br> being
-          <span class="font-[D] tracking-tight italic font-bold text-[#e8341c]">built today</span>
-        </h1>
-        <p class="text-[0.95rem] text-[rgba(240,237,230,0.38)]">48 startups across 12 sectors</p>
+      <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase text-[#e8341c] bg-[rgba(232,52,28,0.12)] border border-[rgba(232,52,28,0.35)] rounded-full px-3 py-1 mb-3.5">
+        Hello, Tushar!
+      </div>
+      <h1 class="font-primary font-semibold text-[4.1rem] leading-snug text-[#f0ede6] mb-2.5">
+        Discover what's <br> being
+        <span class="font-[D] tracking-tight italic font-bold text-[#e8341c]">built today</span>
+      </h1>
+      <p class="text-[0.95rem] text-[rgba(240,237,230,0.38)]">48 startups across 12 sectors</p>
+    </div>
+
+    <div class="relative z-10 flex items-center gap-4 flex-shrink-0">
+      <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+        <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Total Startups</span>
+        <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">48</span>
       </div>
 
-      <div class="relative z-10 flex items-center gap-4 flex-shrink-0">
-        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
-          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Total Startups</span>
-          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">48</span>
-        </div>
-
-        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
-          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Saved by You</span>
-          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">4</span>
-        </div>
-
-        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
-          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Top Score Today</span>
-          <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">928</span>
-        </div>
-
-        <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4  min-h-[130px] min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
-          <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Latest Batch</span>
-          <span class="text-[2.75rem] font-primary font-bold leading-none tracking-tight text-[#f0ede6]">W24</span>
-        </div>
+      <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+        <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Saved by You</span>
+        <span class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">4</span>
       </div>
+
+      <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4 min-h-[130px]  min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+        <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Top Score Today</span>
+        <span data-score class="text-[2.75rem] font-bold leading-none tracking-tight text-[#f0ede6]">928</span>
+      </div>
+
+      <div class="bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-xl px-5 py-4  min-h-[130px] min-w-[150px] flex flex-col gap-1 hover:border-white/15 transition-colors">
+        <span class="text-[10.5px] font-semibold tracking-[0.09em] uppercase text-[rgba(240,237,230,0.38)] mt-0.5">Latest Batch</span>
+        <span data-sector class="text-[2.75rem] font-primary font-bold leading-none tracking-tight text-[#f0ede6]">W24</span>
+      </div>
+    </div>
     </div>
 
     <div class="filter pb-[50px]">
       <div class="filterTop">
         <div class="flex items-center gap-4 mt-8 px-20 pt-4">
           <div class="relative">
-            <input size="70" type="text" placeholder="Search startups..." class="search-input h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full pl-10 pr-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50 transition-colors">
-            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#f0ede6]">
-              <i class="fas fa-search"></i>
-            </span>
+            <div class="relative flex-1 min-w-[220px] max-w-[1060px]">
+              <input
+                id="search-input"
+                size="50"
+                type="text"
+                placeholder="Search startups, keywords…"
+                class="search-input w-full h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full pl-10 pr-4 py-2 text-sm text-[#f0ede6] transition-colors"
+                style="font-family:'Geist Mono',monospace;"
+              />
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#f0ede6]/50 text-sm pointer-events-none">
+                <i class="fas fa-search"></i>
+              </span>
+            </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Filter by Sector:</span>
-            <select class="filter-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50 transition-colors">
+            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)] font-secondary">Sector:</span>
+            <select class="filter-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50">
               <option value="">All Sectors</option>
               <option value="ai">AI</option>
               <option value="healthcare">Healthcare</option>
@@ -102,7 +118,19 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Min Score</span>
+            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)] font-secondary">Sort:</span>
+            <select id="sort-select" class="sort-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <option value="score-desc">Top Score</option>
+              <option value="score-asc">Lowest Score</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="az">A → Z</option>
+              <option value="za">Z → A</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)] font-secondary">Min Score</span>
             <input value="0" type="range" min="0" max="1000" class="slider">
             <span class="text-[15px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">0</span>
 
@@ -111,20 +139,185 @@
       </div>
 
       <div class="filterBottom">
-        <div class="smartFilter flex items-center gap-4 mt-8 px-20 ">
-          <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">Smart Filters:</span>
-          <div class="flex items-center gap-3">
-            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Trending Today</button>
-            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Trending Weekly</button>
-            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Newly Added</button>
-            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Top Scoring Today</button>
-            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer">Top Scoring Weekly</button>
+          <div class="flex items-center gap-4 mt-5 px-20 flex-wrap">
+          <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]" style="font-family:'Geist Mono',monospace;">Smart Filters:</span>
+          <div class="flex items-center gap-3 flex-wrap">
+            <button class="filter-btn active h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-fire-flame-curved mr-1"></i>Trending Today
+            </button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-chart-line mr-1"></i>Trending Weekly
+            </button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-sparkles mr-1"></i>Newly Added
+            </button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-trophy mr-1"></i>Top Scoring Today
+            </button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-medal mr-1"></i>Top Scoring Weekly
+            </button>
+            <button class="filter-btn h-[35px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-1 text-xs text-[#f0ede6] hover:border-[#e8341c]/50 transition-colors cursor-pointer" style="font-family:'Geist Mono',monospace;">
+              <i class="fa-solid fa-briefcase mr-1"></i>Open to Hire
+            </button>
+          </div>
         </div>
       </div>
       </div>
     </div>
+  </section>
+
+  <section id="results" class="font-secondary">
+    <div class="w-full mx-auto max-w-[1400px] mt-[40px] flex flex-col gap-3">
+      <div class="relative flex items-center justify-between gap-6 bg-[#1a1a1a] border border-white/[0.07] rounded-2xl overflow-hidden pl-10 pr-8 py-7">
+        <div class="absolute left-0 top-0 bottom-0 w-1"></div>
+        <div class="flex flex-col gap-3 flex-1">
+          <div class="flex items-center gap-3 flex-wrap">
+            <h3 class="font-syne text-white text-2xl font-extrabold tracking-tight leading-none">Startup Name</h3>
+            <div class="border border-[#ff4d00]/40 bg-[#ff4d00]/15 rounded-md px-2.5 py-0.5">
+              <span class="text-[#ff6a20] text-[10px] font-semibold tracking-widest uppercase">#1 Today</span>
+            </div>
+          </div>
+  
+          <p class="text-white/55 text-sm leading-relaxed max-w-[900px]">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero autem esse aut eum sint unde, iure rerum nulla doloremque, saepe laborum voluptatibus facilis ab, architecto porro quae! Maxime aliquid harum, atque quod perspiciatis in aspernatur, vero quae doloribus incidunt beatae?
+          </p>
+  
+          <div class="flex items-center gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5 bg-[#ff4d00]/10 border border-[#ff4d00]/30 rounded-lg px-3 py-1.5">
+              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Score:</span>
+              <span class="text-[#ff6a20] text-xs font-semibold">928</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5">
+              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Sector:</span>
+              <span class="text-white/80 text-xs font-semibold">AI</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5">
+              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Batch:</span>
+              <span class="text-white/80 text-xs font-semibold">W24</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex gap-3 items-center flex-shrink-0 self-center">
+          <button class="save-btn flex items-center gap-1.5 bg-transparent text-white/65 hover:text-white text-sm font-medium px-5 py-2.5 rounded-xl border border-white/[0.12] hover:border-white/30 cursor-pointer transition-colors" style="font-family:'Geist Mono',monospace;">
+            <i class="fa-regular fa-bookmark"></i> Save
+          </button>
+          <button class="bg-[#FF3800] hover:bg-[#ff5520] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer transition-colors" style="font-family:'TASA Orbiter',sans-serif;">
+            View Details →
+          </button>
+        </div>
+      </div>
+  
+    </div>
+
+    <div class="startupsList max-w-[1400px] mt-[40px] mx-auto">
+      <div class="listTop flex items-center justify-between mb-4">
+        <div class="text-sm text-gray-500" style="font-family:'Geist Mono',monospace;">
+          Showing <strong id="showing-count" class="text-gray-800">1-10</strong> of
+          <strong id="total-count" class="text-gray-800">48</strong> startups
+          <span class="text-gray-400 ml-1">· sorted by top score</span>
+        </div>
+      </div>
+  
+      <div class="listBottom flex flex-col gap-3">
+        <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-gray-400 font-semibold w-5 shrink-0 text-sm">#2</div>
+          <div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg shrink-0">
+            <img src="https://supermaven.com/apple-touch-icon.png" alt="">
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="font-bold text-gray-900 text-base">Supermaven</span>
+              <span class="text-xs bg-orange-50 text-orange-600 border border-orange-200 rounded px-1.5 py-0.5 font-medium">W24</span>
+              <span class="text-xs bg-orange-50 text-orange-500 border border-orange-200 rounded px-1.5 py-0.5 font-medium flex items-center gap-1">
+                Trending
+              </span>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">The fastest Copilot for developers. Powered by a 1M token context window.</p>
+            <div class="flex items-center gap-3 text-xs text-gray-400">
+              <span class="bg-purple-50 text-purple-600 border border-purple-200 rounded px-2 py-0.5 font-medium">Dev tools</span>
+              <span class="flex items-center gap-1 text-orange-500 font-semibold">
+                <i class="fa-solid fa-angles-up"></i> 942
+              </span>
+              <span class="text-gray-300">——</span>
+              <span>3d ago</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3 shrink-0">
+            <button class="flex items-center gap-1.5 bg-transparent text-black/65 hover:text-black text-sm font-medium px-5 py-2.5 rounded-xl border border-black/[0.12] hover:border-black/30 cursor-pointer">
+              <i class="fa-regular fa-bookmark"></i>Save
+            </button>
+            <button class="bg-[#ff4d00] hover:bg-[#ff6220] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer">
+              <i class="fa-solid fa-code-compare"></i>Compare
+            </button>
+          </div>
+        </div>
+        
+        <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-gray-400 font-semibold w-5 shrink-0 text-sm">#3</div>
+          <div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg shrink-0">
+            <img src="https://supermaven.com/apple-touch-icon.png" alt="">
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="font-bold text-gray-900 text-base">Supermaven</span>
+              <span class="text-xs bg-orange-50 text-orange-600 border border-orange-200 rounded px-1.5 py-0.5 font-medium">W24</span>
+              <span class="text-xs bg-orange-50 text-orange-500 border border-orange-200 rounded px-1.5 py-0.5 font-medium flex items-center gap-1">
+                Trending
+              </span>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">The fastest Copilot for developers. Powered by a 1M token context window.</p>
+            <div class="flex items-center gap-3 text-xs text-gray-400">
+              <span class="bg-purple-50 text-purple-600 border border-purple-200 rounded px-2 py-0.5 font-medium">Dev tools</span>
+              <span class="flex items-center gap-1 text-orange-500 font-semibold">
+                <i class="fa-solid fa-angles-up"></i> 942
+              </span>
+              <span class="text-gray-300">——</span>
+              <span>3d ago</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3 shrink-0">
+            <button class="flex items-center gap-1.5 bg-transparent text-black/65 hover:text-black text-sm font-medium px-5 py-2.5 rounded-xl border border-black/[0.12] hover:border-black/30 cursor-pointer">
+              <i class="fa-regular fa-bookmark"></i>Save
+            </button>
+            <button class="bg-[#ff4d00] hover:bg-[#ff6220] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer">
+              <i class="fa-solid fa-code-compare"></i>Compare
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pagination max-w-[1400px] mt-[40px] mx-auto pb-12">
+      <div class="flex flex-col items-center gap-5">
+        <div class="flex items-center gap-1.5">
+          <button class="flex items-center gap-1.5 h-[38px] px-3.5 border border-[#e0ddd6] rounded-[10px] bg-white text-[#888] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Prev
+          </button>
+
+          <div class="flex items-center gap-1 mx-1">
+            <button class="w-[38px] h-[38px] rounded-[10px] border-[1.5px] border-[#e8341c] bg-[#e8341c] text-white text-[13px] font-semibold cursor-pointer">1</button>
+            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">2</button>
+            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">3</button>
+            <span class="w-[38px] h-[38px] flex items-center justify-center text-[#bbb] text-[13px] tracking-wider">···</span>
+            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">11</button>
+            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">12</button>
+          </div>
+
+          <button class="flex items-center gap-1.5 h-[38px] px-3.5 border border-[#e0ddd6] rounded-[10px] bg-white text-[#333] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">
+            Next
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+        </div>
+      </div>
+    </div>
     
   </section>
-  
+
+  <script type="module" src="./js/dashboard.js"></script>
 </body>
 </html>
