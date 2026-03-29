@@ -9,6 +9,30 @@
   <title>Startup Explorer - Dashboard</title>
 </head>
 <body>
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="nav-drawer-backdrop" id="nav-backdrop"></div>
+    <div class="nav-drawer-panel">
+      <div class="nav-drawer-header">
+        <span class="nav-drawer-logo">Startup Explorer</span>
+        <button class="nav-drawer-close" id="nav-close" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <a class="nav-drawer-link active" href="#">
+        <i class="fa-solid fa-compass"></i>Explore
+      </a>
+      <a class="nav-drawer-link" href="saved.html">
+        <i class="fa-solid fa-bookmark"></i>Saved
+      </a>
+      <a class="nav-drawer-link" href="trends.html">
+        <i class="fa-solid fa-chart-line"></i>Trends
+      </a>
+      <a class="nav-drawer-link" href="compare.html">
+        <i class="fa-solid fa-scale-balanced"></i>Compare
+      </a>
+    </div>
+  </div>
+
   <header>
     <nav class="bg-[#10100D] text-white flex items-center justify-between px-20 py-4 border-b-[1.5px] border-[rgba(255,255,255,0.1)] sticky top-0 z-50">
       <div class="navLeft">
@@ -16,6 +40,10 @@
           Startup Explorer
         </h1>
       </div>
+
+      <button class="nav-hamburger" id="nav-open" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
 
       <div class="navMiddle -translate-x-[40px]">
         <ul class="flex gap-8 font-light" style="font-family:'Geist Mono',monospace;">
@@ -107,7 +135,7 @@
 
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)] font-secondary">Sector:</span>
-            <select class="filter-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50">
+            <select id="sector-filter" class="filter-select h-[45px] bg-[rgba(0,0,0,0.2)] border border-[#2e2d2a] rounded-full px-4 py-2 text-sm text-[#f0ede6] focus:outline-none focus:border-[#e8341c]/50">
               <option value="">All Sectors</option>
               <option value="ai">AI</option>
               <option value="healthcare">Healthcare</option>
@@ -131,8 +159,8 @@
 
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)] font-secondary">Min Score</span>
-            <input value="0" type="range" min="0" max="1000" class="slider">
-            <span class="text-[15px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">0</span>
+            <input id="score-slider" value="0" type="range" min="0" max="1000" class="slider">
+            <span id="min-score-value" class="text-[15px] font-semibold tracking-widest uppercase text-[rgba(240,237,230,0.38)]">0</span>
 
           </div>
         </div>
@@ -186,34 +214,42 @@
 
     <div id="startup-list" class="startupsList max-w-[1400px] mt-[40px] mx-auto">
       <div id="spotlight" class="relative flex mb-[40px] items-center justify-between gap-6 bg-[#1a1a1a] border border-white/[0.07] rounded-2xl overflow-hidden pl-10 pr-8 py-7">
+        <div class="flex-shrink-0 w-[72px] h-[72px] rounded-[14px] border border-white/10 bg-[#242424] overflow-hidden">
+          <img 
+            src="" 
+            alt="Startup logo" 
+            class="w-full h-full object-cover"
+          />
+        </div>
+
         <div class="flex flex-col gap-3 flex-1">
-          <div class="flex items-center gap-3 flex-wrap">
-            <h3 class="font-syne text-white text-2xl font-extrabold tracking-tight leading-none">Startup Name</h3>
-            <div class="border border-[#ff4d00]/40 bg-[#ff4d00]/15 rounded-md px-2.5 py-0.5">
-              <span class="text-[#ff6a20] text-[10px] font-semibold tracking-widest uppercase">#1 Today</span>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-3 text-white flex-wrap">Startup Name
+              <div class="border border-[#ff4d00]/40 bg-[#ff4d00]/15 rounded-md px-2.5 py-0.5">
+                <span class="text-[#ff6a20] text-[10px] font-semibold tracking-widest uppercase">#1 Today</span>
+              </div>
             </div>
+            <p class="text-white/35 text-[11px] font-medium tracking-wide">
+              Founded by <span class="text-white/55">Founder Name</span>
+            </p>
           </div>
-  
+
           <p class="text-white/55 text-sm leading-relaxed max-w-[900px]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero autem esse aut eum sint unde, iure rerum nulla doloremque, saepe laborum voluptatibus facilis ab, architecto porro quae! Maxime aliquid harum, atque quod perspiciatis in aspernatur, vero quae doloribus incidunt beatae?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis eos pariatur nemo voluptatem totam natus cum unde, vel et voluptate. Doloremque expedita ab eveniet similique, eaque voluptatum soluta optio at!
           </p>
-  
+
           <div class="flex items-center gap-2 flex-wrap">
             <div class="flex items-center gap-1.5 bg-[#ff4d00]/10 border border-[#ff4d00]/30 rounded-lg px-3 py-1.5">
               <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Score:</span>
               <span class="text-[#ff6a20] text-xs font-semibold">928</span>
             </div>
             <div class="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5">
-              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Sector:</span>
-              <span class="text-white/80 text-xs font-semibold">AI</span>
-            </div>
-            <div class="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5">
-              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Batch:</span>
-              <span class="text-white/80 text-xs font-semibold">W24</span>
+              <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Comments:</span>
+              <span class="text-white/80 text-xs font-semibold">20</span>
             </div>
           </div>
         </div>
-  
+
         <div class="flex gap-3 items-center flex-shrink-0 self-center">
           <button class="save-btn flex items-center gap-1.5 bg-transparent text-white/65 hover:text-white text-sm font-medium px-5 py-2.5 rounded-xl border border-white/[0.12] hover:border-white/30 cursor-pointer transition-colors" style="font-family:'Geist Mono',monospace;">
             <i class="fa-regular fa-bookmark"></i> Save
@@ -329,7 +365,29 @@
     </div>
     
   </section>
+  <script>
+    const drawer   = document.getElementById('nav-drawer');
+    const backdrop = document.getElementById('nav-backdrop');
+    const openBtn  = document.getElementById('nav-open');
+    const closeBtn = document.getElementById('nav-close');
+  
+    function openDrawer() {
+      drawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  
+    openBtn?.addEventListener('click', openDrawer);
+    closeBtn?.addEventListener('click', closeDrawer);
+    backdrop?.addEventListener('click', closeDrawer);
+  </script>
 
+  <script type="module" src="./js/config.js"></script>
+  <script type="module" src="./js/utils.js"></script>
+  <script type="module" src="./js/api.js"></script>
   <script type="module" src="./js/dashboard.js"></script>
 </body>
 </html>

@@ -34,6 +34,17 @@ body{
 }
 
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+
 .hero-bg {
   background-color: #10100D;
   background-image:
@@ -66,3 +77,585 @@ body{
   animation: shimmer 1.4s infinite;
   border-radius: 8px;
 }
+
+
+@media (max-width: 1280px) {
+  nav {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .heroSection {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .heroSection h1 {
+    font-size: 3.2rem;
+  }
+
+  .filter > div,
+  .filterTop > div,
+  .filterBottom > div {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  #startup-list,
+  .pagination {
+    max-width: 100%;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  #results {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+.nav-hamburger:hover { color: #fff; }
+
+.nav-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+.nav-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+}
+.nav-drawer-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  background: #10100D;
+  border-right: 1px solid rgba(255,255,255,0.09);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+.nav-drawer.open { display: block; }
+.nav-drawer.open .nav-drawer-panel { transform: translateX(0); }
+
+.nav-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.nav-drawer-logo {
+  color: #FF3800;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.15rem;
+  font-family: 'TASA Orbiter', sans-serif;
+}
+.nav-drawer-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+.nav-drawer-close:hover { color: #fff; }
+
+.nav-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.875rem;
+  border-radius: 0.625rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: background 0.18s, color 0.18s;
+}
+.nav-drawer-link:hover,
+.nav-drawer-link.active {
+  background: rgba(232,52,28,0.12);
+  color: #ff6a20;
+}
+.nav-drawer-link i {
+  width: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  nav {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .navMiddle {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+  }
+
+  .heroSection {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    gap: 2rem;
+  }
+
+  .heroSection h1 {
+    font-size: 2.8rem;
+    line-height: 1.2;
+  }
+
+  .heroSection > div:last-child {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .heroSection > div:last-child > div {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 130px;
+  }
+
+  .filterTop > div {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .filterBottom > div {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  #score-slider {
+    max-width: 120px;
+  }
+
+  #startup-list,
+  .pagination {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  #spotlight {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  #spotlight > div:last-child {
+    align-self: stretch;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .card {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .card > div:last-child {
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .pagination .flex {
+    gap: 0.5rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .navMiddle ul {
+    gap: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .navMiddle ul li a span,
+  .navMiddle ul li a {
+    font-size: 0.75rem;
+  }
+
+  .heroSection {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    min-height: auto;
+  }
+
+  .heroSection h1 {
+    font-size: 2.2rem;
+  }
+
+  .heroSection p {
+    font-size: 0.8rem;
+  }
+
+  .heroSection > div:last-child > div {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 110px;
+    min-height: 100px;
+  }
+
+  .heroSection > div:last-child > div span[class*="text-[2.75rem]"] {
+    font-size: 2rem;
+  }
+
+  .filterTop > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .filterTop .relative {
+    width: 100%;
+  }
+
+  .filterTop .relative .relative {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+
+  .filterTop > div > div:nth-child(2),
+  .filterTop > div > div:nth-child(3) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .filterTop > div > div:nth-child(4) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  #score-slider {
+    flex: 1;
+    max-width: none;
+  }
+
+  .filterBottom > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  #startup-list,
+  .pagination {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  #spotlight {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  #spotlight h3,
+  #spotlight > div:first-child > div:first-child {
+    font-size: 0.95rem;
+  }
+
+  #spotlight p {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .listTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .card > div:first-child {
+    display: none; /* hide rank number on mobile */
+  }
+
+  .card > div:last-child {
+    justify-content: stretch;
+  }
+
+  .card > div:last-child button {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .pagination .flex.items-center.gap-1\.5 {
+    gap: 0.25rem;
+  }
+
+  .pagination .flex.items-center.gap-1 button:nth-child(n+3):nth-child(-n+4) {
+    display: none;
+  }
+}
+
+
+@media (max-width: 480px) {
+  /* NAV */
+  nav {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .navLeft h1 {
+    font-size: 1.25rem;
+  }
+
+  .navMiddle ul {
+    gap: 0.75rem;
+  }
+
+  .navMiddle ul li a {
+    font-size: 0;
+    gap: 0;
+  }
+  .navMiddle ul li a i {
+    font-size: 1rem;
+  }
+
+  .navRight span.text-sm {
+    display: none;
+  }
+
+  .navRight .flex.items-center.gap-2\.5 {
+    gap: 0.5rem;
+  }
+
+  .heroSection {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .heroSection h1 {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+
+  .heroSection > div:last-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    width: 100%;
+  }
+
+  .heroSection > div:last-child > div {
+    flex: unset;
+    min-height: 85px;
+    min-width: unset;
+    padding: 0.85rem 1rem;
+  }
+
+  .heroSection > div:last-child > div span[class*="text-[2.75rem]"] {
+    font-size: 1.7rem;
+  }
+
+  .heroSection > div:last-child > div span[class*="text-[10.5px]"] {
+    font-size: 9px;
+  }
+
+  .filterTop > div {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .filterTop > div > div:nth-child(2),
+  .filterTop > div > div:nth-child(3) {
+    width: 100%;
+  }
+
+  .filterTop select {
+    flex: 1;
+    width: 100%;
+  }
+
+  .filterBottom > div {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .filterBottom > div > div.flex {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    gap: 0.5rem;
+  }
+
+  .filterBottom > div > div.flex::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #startup-list,
+  .pagination {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  #spotlight {
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #spotlight p {
+    font-size: 0.78rem;
+    -webkit-line-clamp: 2;
+  }
+
+  #spotlight > div:last-child {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  #spotlight > div:last-child button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card {
+    padding: 0.875rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .card > div:nth-child(2) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .card > div:nth-child(3) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card > div:nth-child(3) p {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card > div:last-child {
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .card > div:last-child button {
+    flex: 1;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .pagination {
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .pagination .flex.items-center.gap-1 {
+    gap: 0.2rem;
+  }
+
+  .pagination .flex.items-center.gap-1 > *:nth-child(n+4):nth-child(-n+5) {
+    display: none;
+  }
+
+  .pagination button[class*="w-\[38px\]"] {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .pagination button:not([class*="w-\[38px\]"]) {
+    height: 32px;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  #loading > div:first-child {
+    height: 180px;
+  }
+
+  #loading > div:not(:first-child) {
+    height: 70px;
+  }
+}
+
