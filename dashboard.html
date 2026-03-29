@@ -168,9 +168,24 @@
   </section>
 
   <section id="results" class="font-secondary">
-    <div class="w-full mx-auto max-w-[1400px] mt-[40px] flex flex-col gap-3">
-      <div class="relative flex items-center justify-between gap-6 bg-[#1a1a1a] border border-white/[0.07] rounded-2xl overflow-hidden pl-10 pr-8 py-7">
-        <div class="absolute left-0 top-0 bottom-0 w-1"></div>
+    <div class="w-full mx-auto max-w-[1400px] flex flex-col gap-3">
+
+      <div id="loading" class="hidden flex mt-[40px] flex-col gap-3 mb-6">
+        <div class="skeleton h-[240px] w-full rounded-2xl"></div>
+        <div class="skeleton h-[88px] w-full rounded-xl"></div>
+        <div class="skeleton h-[88px] w-full rounded-xl"></div>
+        <div class="skeleton h-[88px] w-full rounded-xl"></div>
+      </div>
+
+      <div id="no-results" class="hidden flex flex-col items-center gap-4 mt-10">
+        <div class="text-gray-500 text-sm">No startups found matching your criteria.</div>
+        <button id="reset-filters" class="bg-[#ff4d00] hover:bg-[#ff6220] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer">
+          Reset Filters
+        </button>
+    </div>
+
+    <div id="startup-list" class="startupsList max-w-[1400px] mt-[40px] mx-auto">
+      <div id="spotlight" class="relative flex mb-[40px] items-center justify-between gap-6 bg-[#1a1a1a] border border-white/[0.07] rounded-2xl overflow-hidden pl-10 pr-8 py-7">
         <div class="flex flex-col gap-3 flex-1">
           <div class="flex items-center gap-3 flex-wrap">
             <h3 class="font-syne text-white text-2xl font-extrabold tracking-tight leading-none">Startup Name</h3>
@@ -208,10 +223,7 @@
           </button>
         </div>
       </div>
-  
-    </div>
 
-    <div class="startupsList max-w-[1400px] mt-[40px] mx-auto">
       <div class="listTop flex items-center justify-between mb-4">
         <div class="text-sm text-gray-500" style="font-family:'Geist Mono',monospace;">
           Showing <strong id="showing-count" class="text-gray-800">1-10</strong> of
