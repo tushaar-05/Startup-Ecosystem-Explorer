@@ -307,7 +307,7 @@ html, body {
 
 
 @media (max-width: 768px) {
-  /* NAV */
+
   nav {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -430,7 +430,7 @@ html, body {
   }
 
   .card > div:first-child {
-    display: none; /* hide rank number on mobile */
+    display: none;
   }
 
   .card > div:last-child {
@@ -453,7 +453,6 @@ html, body {
 
 
 @media (max-width: 480px) {
-  /* NAV */
   nav {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
@@ -573,7 +572,6 @@ html, body {
 
   #spotlight p {
     font-size: 0.78rem;
-    -webkit-line-clamp: 2;
   }
 
   #spotlight > div:last-child {

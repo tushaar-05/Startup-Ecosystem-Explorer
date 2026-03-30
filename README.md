@@ -1,77 +1,164 @@
 # Startup Ecosystem Explorer
-A web application to discover, search, filter, and analyse startups from the Y Combinator ecosystem — built using the Hacker News public API.
+
+A web application to discover, search, filter, and analyse startups from the Product Hunt ecosystem — built using the Product Hunt GraphQL API.
 
 ## Purpose
-The startup world moves fast. New companies are launched every week, and keeping track of what is being built — across sectors, funding batches, and traction levels — is difficult without a dedicated tool.
-Startup Ecosystem Explorer solves this by turning raw Hacker News data into a clean, interactive startup directory. Users can search for startups by keyword, filter by industry sector or YC batch, sort by score or recency, bookmark companies they want to revisit and compare any 2 startups — all in one place.
+
+The startup world moves fast. New products and companies launch every day, and keeping track of what is being built — across sectors, ranking, and traction — is difficult without a dedicated tool.
+
+Startup Ecosystem Explorer solves this by turning live Product Hunt data into a clean, interactive startup directory. Users can search for startups by keyword, filter by topic/sector, sort by votes or recency, bookmark companies they want to revisit, and compare any 2 startups — all in one place.
+
 The target audience includes aspiring entrepreneurs researching markets, developers exploring startup ideas, students studying business and technology, and anyone curious about what is being built in the startup ecosystem right now.
 
+---
+
 ## API Used
-Hacker News API (by Y Combinator / Firebase)
 
-- Base URL: https://hacker-news.firebaseio.com/v0/ 
-- Documentation: https://github.com/HackerNews/API
+**Product Hunt API (GraphQL)**
 
-- Key endpoints used:
-- topstories.json — returns IDs of the top-ranked stories
-- newstories.json — returns IDs of the most recently posted stories
-- item/{id}.json — returns full details of a single story (title, score, time, URL, author)
+- Base URL: `https://api.producthunt.com/v2/api/graphql`
+- Documentation: https://api.producthunt.com/v2/docs
 
-Authentication: None required — fully public and free
+### Key Query Used
+
+```graphql
+query Posts($after: String) {
+  posts(order: RANKING, first: 30, after: $after) {
+    edges {
+      node {
+        id
+        name
+        tagline
+        slug
+        url
+        votesCount
+        commentsCount
+        createdAt
+        topics {
+          edges {
+            node {
+              name
+              slug
+            }
+          }
+        }
+        thumbnail { url }
+        user { name username headline }
+        description
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+### Fields Used Per Post
+| `id` -> Unique identifier for each startup/post
+| `name` -> Startup name displayed on cards
+| `tagline` -> One-line description shown on each card
+| `slug` -> Used to build the Product Hunt profile URL
+| `url` -> External link to the startup's website
+| `votesCount` -> Upvote score used for sorting and traction bar
+| `commentsCount -> Engagement metric shown on cards
+| `createdAt` -> Timestamp used to compute post age and sorting
+| `topics` -> Industry categories used for sector filtering
+| `thumbnail.url -> Product logo/image displayed on each card
+| `user` -> Founder name, username, and headline
+| `description` -> Full product description for the detail/compare view
+
+### Authentication
+The API requires a Developer Token (Bearer token). This is stored in `config.js` as `PH_TOKEN` and passed in the `Authorization` header of every request.
 
 
-## Features Planned
+### Pagination
+The API supports cursor-based pagination via `pageInfo.endCursor` and the `$after` variable. The app passes this cursor to fetch additional pages of results on demand.
+
+---
+
+## Features
 ### Core Features
-- Search — live search bar to filter startups by name or keyword using the Array.filter() method
-- Sector Filtering — filter startups by industry category (AI, Fintech, Climate, Health, SaaS, Dev tools) using Array.filter()
-- Sorting — sort results by top score, newest first, or alphabetically using Array.sort()
-- Startup Cards — each startup displays its name, one-line description, category badge, upvote score, batch tag, and post age
-- Loading States — spinner shown while API data is being fetched
-- Responsive Design — fully functional across desktop, tablet, and mobile screen sizes
+- **Search** — live search bar to filter startups by name or keyword using `Array.filter()`
+- **Topic Filtering** — filter startups by Product Hunt topic categories (AI, Fintech, Climate, Health, SaaS, Developer Tools, etc.) extracted from each post's `topics` field
+- **Sorting** — sort results by top votes, newest first, or alphabetically using `Array.sort()`
+- **Startup Cards** — each card displays the startup's thumbnail, name, tagline, topic badges, vote count, comment count, founder info, and post age
+- **Loading States** — skeleton loading while API data is being fetched
+- **Responsive Design** — fully functional across desktop, tablet, and mobile screen sizes
 
 ### Interactive Features
-- Bookmark / Save — star icon on each card to save startups; saved list persists using localStorage
-- Compare Mode — select up 2 startups and view them side by side in a comparison panel
-- Trend Analysis Panel — sidebar showing a breakdown of startup counts per sector, derived using Array.reduce()
-- Score Bar — visual progress bar on each row representing relative traction score
+- **Bookmark / Save** — star icon on each card to save startups; saved list persists using `localStorage`
+- **Compare Mode** — select up to 2 startups and view them side by side in a comparison panel (name, tagline, votes, comments, topics, description)
+- **Score Bar** — visual progress bar on each card representing relative traction (votes relative to the highest-voted post in the current fetch)
+- **Compare** - Can compare any two startups side by side.
 
-### Bonus Features (Planned)
-- Debounced Search — search input waits 300ms after the user stops typing before filtering, avoiding unnecessary re-renders on every keystroke
-- Pagination — results split into pages of 10–20 startups for better performance and readability
-- Dark / Light Mode Toggle — theme preference saved to localStorage
-- Spotlight Card — highest-scoring startup of the current fetch is highlighted at the top of the dashboard
-- Quick Filters — one-click preset filters (e.g. Trending, New this week, Score > 200) for faster exploration
+### Bonus Features
+- **Debounced Search** — search input waits 300ms after the user stops typing before filtering, avoiding unnecessary re-renders on every keystroke
+- **Pagination** — results split into pages of 10–20 startups using cursor-based pagination (`pageInfo.hasNextPage` + `endCursor`)
+- **Dark / Light Mode Toggle** — theme preference saved to `localStorage`
+- **Spotlight Card** — highest-voted startup of the current fetch is highlighted at the top of the dashboard
+- **Quick Filters** — one-click preset filters (e.g. Trending, New This Week, Votes > 200) for faster exploration
 
+---
 
-### Tech Stack
-- HTML5: Page structure and semantic markup
-- CSS3/TailwindCSS: Styling, layout (Flexbox and CSS Grid), responsive design
-- Vanilla JavaScript (ES6+): API calls, DOM manipulation, all logicHacker News APILive startup data source
-- localStorage: Persisting bookmarks and user preferences
-- Google Fonts: Typography
+## Tech Stack
+| HTML5 -> Page structure and semantic markup
+| CSS3 / TailwindCSS -> Styling, layout (Flexbox & CSS Grid), responsive
+| Vanilla JavaScript ES6+ -> API calls, DOM manipulation, all logic
+| Product Hunt GraphQL API -> Live startup data source
+| `localStorage` -> Persisting bookmarks and theme preferences
+| Google Fonts -> Typography
 
 No frameworks or build tools are used. This is a pure HTML/CSS/JS project.
 
+---
 
 ## Setup and Running
 This project requires no installation, build step, or server. It runs entirely in the browser.
 
-### Steps to run locally:
--  Clone the repository:
-bash   git clone https://github.com/tushaar-05/startup-ecosystem-explorer.git
--  Navigate into the project folder:
-bash   cd startup-ecosystem-explorer
--  Open index.html in your browser:
--  Double-click the file in your file explorer, or Use the Live Server extension in VS Code (recommended for auto-reload)
+### Steps to Run Locally
 
-No API key is needed. The Hacker News API is public and requires no authentication.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/tushaar-05/startup-ecosystem-explorer.git
+   ```
 
-## Note: The app fetches live data from the Hacker News API on load. An internet connection is required for the data to appear.
+2. **Navigate into the project folder:**
+   ```bash
+   cd startup-ecosystem-explorer
+   ```
 
+3. **Add your Product Hunt API token:**
+   - Create a Developer account at https://www.producthunt.com/v2/oauth/applications
+   - Generate a Developer Token
+   - Add it to `config.js`:
+     ```js
+     export const PH_TOKEN = 'your_token_here';
+     export const API_URL = 'https://api.producthunt.com/v2/api/graphql';
+     ```
+
+4. **Open `dashboard.html` in your browser:**
+   - Double-click the file in your file explorer, or
+   - Use the **Live Server** extension in VS Code (recommended for ES module support)
+
+> ⚠️ Because `api.js` uses ES modules (`import`/`export`), the project must be served over HTTP (not opened as a raw file). Use Live Server or any local HTTP server.
+
+---
+
+## Note
+The app fetches live data from the Product Hunt API on load. An internet connection and a valid API token are required for data to appear.
+
+---
 
 ## Deployment
-The final project will be deployed using vercel and the live link will be added here once available.
-Live URL: coming soon
+The final project will be deployed using Vercel. The live link will be added here once available.
 
-# Author
-Tushar R Singh — Individual Project, 2026
+**Live URL:** coming soon
+
+---
+
+## Author
+
+**Tushar R Singh** — Individual Project, 2026
