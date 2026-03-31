@@ -412,9 +412,6 @@ html, body {
 
   #spotlight p {
     font-size: 0.8rem;
-    -webkit-line-clamp: 3;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
@@ -541,15 +538,11 @@ html, body {
   .filterBottom > div > div.flex {
     flex-wrap: nowrap;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     padding-bottom: 4px;
     scrollbar-width: none;
     gap: 0.5rem;
   }
 
-  .filterBottom > div > div.flex::-webkit-scrollbar {
-    display: none;
-  }
 
   .filter-btn {
     white-space: nowrap;
