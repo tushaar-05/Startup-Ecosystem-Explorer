@@ -1,15 +1,21 @@
-async function fetchNewStoryIds(){
-  try{
-    const response = await fetch('https://hacker-news.firebaseio.com/v0/newstories.json');
+import { fetchData } from './api.js';
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+const startupList = document.getElementById('startup-list');
+const loading = document.getElementById('loading');
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching new story IDs:', error);
-    return [];
+async function initDashboard() {
+  loading.classList.remove('hidden');
+  startupList.classList.add('hidden');
+
+  const data = await fetchData();
+
+  if (!data) {
+    console.log("No data received");
+    return;
   }
+
+  loading.classList.add('hidden');
+  startupList.classList.remove('hidden');
+
+  const posts = data.posts.edges.map(edge => edge.node);
 }
