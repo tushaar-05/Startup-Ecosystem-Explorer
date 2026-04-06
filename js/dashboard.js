@@ -20,8 +20,19 @@ async function initDashboard() {
   const posts = data.posts.edges.map(edge => edge.node);
   // console.log(posts);
 
+  const totalCountEl = document.getElementById('total-count');
+  if (totalCountEl) {
+    totalCountEl.textContent = data.posts.totalCount || posts.length;
+  }
+  
+  const showingCountEl = document.getElementById('showing-count');
+  if (showingCountEl) {
+    const defaultShowing = Math.min(10, posts.length);
+    showingCountEl.textContent = `1-${defaultShowing}`;
+  }
+
   renderSpotlight(posts[0]);
-  renderStartups(posts.slice(1));
+  renderStartups(posts.slice(1, 10));
 }
 
 
