@@ -2,6 +2,21 @@ import { fetchData } from './api.js';
 
 const startupList = document.getElementById('startup-list');
 const loading = document.getElementById('loading');
+const listBottom = document.getElementById('listBottom');
+const spotlight = document.getElementById('spotlight');
+const searchInput = document.getElementById('search-input');
+const btn = document.getElementById('load-more-btn');
+const statusEl = document.getElementById('load-more-status');
+const showingEl = document.getElementById('showing-count');
+const totalEl = document.getElementById('total-count');
+
+let allStartups = [];
+let displayedStartups = [];
+let currentSpotlight = null;
+let searchQuery = "";
+let cursor = null;
+let hasNextPage = true;
+const PAGE_SIZE = 9;
 
 async function initDashboard() {
   loading.classList.remove('hidden');
@@ -10,224 +25,201 @@ async function initDashboard() {
   const data = await fetchData();
 
   if (!data) {
-    console.log("No data received");
+    console.error("No data received");
     return;
   }
 
   loading.classList.add('hidden');
   startupList.classList.remove('hidden');
 
-  let buffer = data.posts.edges.map(e => e.node);
-  console.log(data)
-  let cursor = data.posts.pageInfo.endCursor;
-  let hasNextPage = data.posts.pageInfo.hasNextPage;
-  let totalShown = 0;
-  const PAGE_SIZE = 9;
+  const initialPosts = data.posts.edges.map(e => e.node);
+  currentSpotlight = initialPosts.shift();
+  allStartups = [...initialPosts];
+  cursor = data.posts.pageInfo.endCursor;
+  hasNextPage = data.posts.pageInfo.hasNextPage;
 
-  const btn = document.getElementById('load-more-btn');
-  const statusEl = document.getElementById('load-more-status');
-  const showingEl = document.getElementById('showing-count');
-  const totalEl = document.getElementById('total-count');
-
-  renderSpotlight(buffer.shift());
-  if (totalEl) {
-    if (hasNextPage) {
-      totalEl.textContent = '50+';
-    } else {
-      totalEl.textContent = buffer.length + 1;
-    }
-  }
-
-  async function loadMore() {
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[11px]"></i> Loading…';
-
-    if (buffer.length < PAGE_SIZE && hasNextPage) {
-      const more = await fetchData(cursor);
-      if (more) {
-        buffer = buffer.concat(more.posts.edges.map(e => e.node));
-        cursor = more.posts.pageInfo.endCursor;
-        hasNextPage = more.posts.pageInfo.hasNextPage;
-        if (totalEl) totalEl.textContent = hasNextPage ? '50+' : totalShown + buffer.length + 1;
-      }
-    }
-
-    const batch = buffer.splice(0, PAGE_SIZE);
-    appendStartups(batch, totalShown);
-    totalShown += batch.length;
-
-    if (showingEl) showingEl.textContent = `1-${totalShown + 1}`;
-
-    if (buffer.length === 0 && !hasNextPage) {
-      btn.style.display = 'none';
-      statusEl.textContent = `All ${totalShown + 1} startups loaded`;
-      if (totalEl) totalEl.textContent = totalShown + 1;
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-chevron-down text-[11px]"></i> Load More Startups';
-    }
-  }
-
-  await loadMore();
+  displayedStartups = allStartups.splice(0, PAGE_SIZE);
+  
+  renderSpotlight(currentSpotlight);
+  updateView();
 
   btn.addEventListener('click', loadMore);
+  searchInput.addEventListener('input', handleSearch);
+  
+  document.getElementById('reset-filters')?.addEventListener('click', () => {
+    searchInput.value = '';
+    searchQuery = '';
+    updateView();
+  });
 }
 
+async function loadMore() {
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[11px]"></i> Loading…';
+
+  if (allStartups.length < PAGE_SIZE && hasNextPage) {
+    const more = await fetchData(cursor);
+    if (more) {
+      allStartups = allStartups.concat(more.posts.edges.map(e => e.node));
+      cursor = more.posts.pageInfo.endCursor;
+      hasNextPage = more.posts.pageInfo.hasNextPage;
+    }
+  }
+
+  const nextBatch = allStartups.splice(0, PAGE_SIZE);
+  displayedStartups = displayedStartups.concat(nextBatch);
+  
+  updateView();
+
+  if (allStartups.length === 0 && !hasNextPage) {
+    btn.style.display = 'none';
+    statusEl.textContent = `All ${displayedStartups.length + 1} startups loaded`;
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-chevron-down text-[11px]"></i> Load More Startups';
+  }
+}
+
+let debounceTimer;
+
+function handleSearch(e) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        updateView();
+    }, 350);
+}
+
+function updateView() {
+  if (searchQuery) {
+    const filtered = displayedStartups.concat(allStartups).filter(post => 
+      post.name?.toLowerCase().includes(searchQuery) ||
+      post.tagline?.toLowerCase().includes(searchQuery) ||
+      post.description?.toLowerCase().includes(searchQuery) ||
+      post.user.name?.toLowerCase().includes(searchQuery)
+    );
+    
+    const spotlightMatches = currentSpotlight && (
+      currentSpotlight.name?.toLowerCase().includes(searchQuery) ||
+      currentSpotlight.tagline?.toLowerCase().includes(searchQuery) ||
+      currentSpotlight.description?.toLowerCase().includes(searchQuery)
+    );
+
+    listBottom.innerHTML = '';
+    if (filtered.length === 0 && !spotlightMatches) {
+        document.getElementById('no-results').classList.remove('hidden');
+        spotlight.style.display = 'none';
+    } else {
+        document.getElementById('no-results').classList.add('hidden');
+        if (spotlightMatches) {
+            spotlight.style.display = 'flex';
+            renderSpotlight(currentSpotlight);
+        } else {
+            spotlight.style.display = 'none';
+        }
+        appendStartups(filtered, 0);
+    }
+
+    btn.style.display = 'none';
+    statusEl.style.display = 'none';
+    if (showingEl) showingEl.parentElement.style.display = 'none';
+  } else {
+
+    document.getElementById('no-results').classList.add('hidden');
+    spotlight.style.display = 'flex';
+    renderSpotlight(currentSpotlight);
+    listBottom.innerHTML = '';
+    appendStartups(displayedStartups, 0);
+    
+    btn.style.display = (allStartups.length > 0 || hasNextPage) ? 'flex' : 'none';
+    statusEl.style.display = 'block';
+    if (showingEl) {
+        showingEl.parentElement.style.display = 'block';
+        showingEl.textContent = `1-${displayedStartups.length + 1}`;
+    }
+    if (totalEl) {
+        totalEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
+    }
+  }
+}
 
 function renderSpotlight(post) {
-  const spotlight = document.getElementById('spotlight');
-
-  const sector = post.topics.edges[0].node.name;
-
-  const shortDescription =
-    post.description?.length > 250
+  if (!post) return;
+  const sector = post.topics.edges[0]?.node.name || 'Other';
+  const shortDescription = post.description?.length > 250
       ? post.description.substring(0, 250) + "..."
-      : post.description ?? '';
+      : post.description ?? post.tagline ?? '';
 
   spotlight.innerHTML = `
     <div class="flex-shrink-0 w-[72px] h-[72px] rounded-[14px] border border-white/10 bg-[#242424] overflow-hidden">
-      <img 
-        src="${post.thumbnail.url}" 
-        alt="${post.name} Thumbnail" 
-        class="w-full h-full object-cover"
-      />
+      <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover"/>
     </div>
-
     <div class="flex flex-col gap-3 flex-1">
-
       <div class="flex flex-col gap-1">
         <div class="flex items-center gap-3 text-white flex-wrap">
-          ${post.name ? `<span class="text-lg font-bold tracking-wide">${post.name}</span>` : ''}
-
+          <span class="text-lg font-bold tracking-wide">${post.name}</span>
           <div class="border border-[#ff4d00]/40 bg-[#ff4d00]/15 rounded-md px-2.5 py-0.5">
             <span class="text-[#ff6a20] text-[10px] font-semibold tracking-widest uppercase">#1 Today</span>
           </div>
-
           <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium text-[10px]">
             ${sector}
           </span>
         </div>
-
         <p class="text-white/35 text-[11px] font-medium tracking-wide">
           Founded by <span class="text-white/55">${post.user.name}</span>
         </p>
       </div>
-
-      <p class="text-white/55 text-sm leading-relaxed max-w-[900px]">
-        ${shortDescription}
-      </p>
-
+      <p class="text-white/55 text-sm leading-relaxed max-w-[900px]">${shortDescription}</p>
       <div class="flex items-center gap-2 flex-wrap">
         <div class="flex items-center gap-1.5 bg-[#ff4d00]/10 border border-[#ff4d00]/30 rounded-lg px-3 py-1.5">
           <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Score:</span>
           <span class="text-[#ff6a20] text-xs font-semibold">${post.votesCount}</span>
         </div>
-
         <div class="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5">
           <span class="text-white/35 text-[10px] font-medium tracking-widest uppercase">Comments:</span>
           <span class="text-white/80 text-xs font-semibold">${post.commentsCount}</span>
         </div>
       </div>
     </div>
-
     <div class="flex gap-3 items-center flex-shrink-0 self-center">
-
-      <!-- Save -->
-      <button class="save-btn flex items-center gap-1.5 bg-transparent text-white/65 hover:text-white text-sm font-medium px-5 py-2.5 rounded-xl border border-white/[0.12] hover:border-white/30 cursor-pointer transition-colors" style="font-family:'Geist Mono',monospace;">
+      <button class="save-btn flex items-center gap-1.5 bg-transparent text-white/65 hover:text-white text-sm font-medium px-5 py-2.5 rounded-xl border border-white/[0.12] hover:border-white/30 cursor-pointer transition-colors">
         <i class="fa-regular fa-bookmark"></i> Save
       </button>
-
-      <!-- Compare -->
-      <button 
-        class="flex items-center gap-1.5 text-orange-500 hover:text-white text-xs font-semibold px-3.5 py-2 rounded-lg border border-orange-300 hover:border-orange-500 bg-orange-50 hover:bg-[#ff4d00] transition-all cursor-pointer"
-        title="Compare"
-      >
-        <i class="fa-solid fa-code-compare text-[11px]"></i>
-        <span>Compare</span>
-      </button>
-
-      <!-- View -->
-      <button class="bg-[#FF3800] hover:bg-[#ff5520] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer transition-colors" style="font-family:'TASA Orbiter',sans-serif;">
+      <button class="bg-[#FF3800] hover:bg-[#ff5520] text-white text-sm font-semibold px-5 py-2.5 rounded-xl cursor-pointer transition-colors">
         View Details →
       </button>
-
     </div>
-
   `;
 }
 
-function appendStartups(posts, rank = 0) {
-  const list = document.getElementById('listBottom');
-  list.insertAdjacentHTML('beforeend', posts.map((post, index) => `
+function appendStartups(posts, rankStart = 0) {
+  listBottom.insertAdjacentHTML('beforeend', posts.map((post, index) => `
     <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
-      
-      <div class="text-gray-400 font-bold w-6 shrink-0 text-base text-center">#${rank + index + 2}</div>
-
+      <div class="text-gray-400 font-bold w-6 shrink-0 text-base text-center">#${rankStart + index + 2}</div>
       <div class="w-12 h-12 rounded-xl overflow-hidden border border-gray-100 shrink-0">
         <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover">
       </div>
-
       <div class="flex-1 min-w-0">
-        <!-- Name + Trending badge -->
         <div class="flex items-center gap-2 flex-wrap mb-0.5">
           <span class="font-bold text-gray-900 text-base">${post.name}</span>
-          ${post.commentsCount >= 20 ? `
-            <span class="text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2 py-0.5 font-semibold tracking-wide uppercase">
-              <i class="fa-solid fa-fire"></i> Trending
-            </span>` : ''}
+          ${post.commentsCount >= 20 ? `<span class="text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2 py-0.5 font-semibold tracking-wide uppercase"><i class="fa-solid fa-fire"></i> Trending</span>` : ''}
         </div>
-
-        <p class="text-[11px] text-gray-400 font-medium mb-1.5">
-          Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span>
-        </p>
-
+        <p class="text-[11px] text-gray-400 font-medium mb-1.5">Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span></p>
         <p class="text-gray-500 text-sm mb-2 line-clamp-1">${post.description ?? post.tagline ?? ''}</p>
-
         <div class="flex items-center gap-2.5 text-xs text-gray-400 flex-wrap">
-          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">
-            ${post.topics.edges[0].node.name}
-          </span>
-          <span class="flex items-center gap-1 text-orange-500 font-semibold">
-            <i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}
-          </span>
-          <span class="flex items-center gap-1 text-gray-500 font-semibold">
-            <i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}
-          </span>
+          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">${post.topics.edges[0]?.node.name || 'Other'}</span>
+          <span class="flex items-center gap-1 text-orange-500 font-semibold"><i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}</span>
+          <span class="flex items-center gap-1 text-gray-500 font-semibold"><i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}</span>
           <span class="text-gray-300">·</span>
-          <span class="text-gray-400">${post.createdAt}</span>
+          <span class="text-gray-400">${new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
       </div>
-
       <div class="flex items-center gap-2 shrink-0">
-        <button 
-          class="flex items-center gap-1.5 text-gray-500 hover:text-gray-800 text-xs font-semibold px-3.5 py-2 rounded-lg border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 transition-all cursor-pointer"
-          title="Save"
-        >
-          <i class="fa-regular fa-bookmark"></i>
-          <span>Save</span>
-        </button>
-
-        <button 
-          class="flex items-center gap-1.5 text-orange-500 hover:text-white text-xs font-semibold px-3.5 py-2 rounded-lg border border-orange-300 hover:border-orange-500 bg-orange-50 hover:bg-[#ff4d00] transition-all cursor-pointer"
-          title="Compare"
-        >
-          <i class="fa-solid fa-code-compare text-[11px]"></i>
-          <span>Compare</span>
-        </button>
-
-        <a 
-          href="${post.url}" 
-          class="flex items-center gap-1.5 text-white text-xs font-semibold px-3.5 py-2 rounded-lg bg-gray-900 hover:bg-gray-700 transition-all cursor-pointer"
-          title="View Details"
-        >
-          View Details
-          <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </a>
+        <button class="flex items-center gap-1.5 text-gray-500 hover:text-gray-800 text-xs font-semibold px-3.5 py-2 rounded-lg border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 transition-all cursor-pointer"><i class="fa-regular fa-bookmark"></i><span>Save</span></button>
+        <a href="${post.url}" target="_blank" class="flex items-center gap-1.5 text-white text-xs font-semibold px-3.5 py-2 rounded-lg bg-gray-900 hover:bg-gray-700 transition-all cursor-pointer">View Details <i class="fa-solid fa-arrow-right text-[10px]"></i></a>
       </div>
-
     </div>
   `).join(''));
 }
-
 
 initDashboard();
