@@ -269,7 +269,7 @@
       </div>
   
       <div id="listBottom" class="listBottom flex flex-col gap-3">
-        <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
+        <!-- <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
           <div class="text-gray-400 font-semibold w-5 shrink-0 text-sm">#2</div>
           <div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-lg shrink-0">
             <img src="https://supermaven.com/apple-touch-icon.png" alt="">
@@ -300,35 +300,20 @@
               <i class="fa-solid fa-code-compare"></i>Compare
             </button>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
 
-    <div class="pagination max-w-[1400px] mt-[40px] mx-auto pb-12">
-      <div class="flex flex-col items-center gap-5">
-        <div class="flex items-center gap-1.5">
-          <button class="flex items-center gap-1.5 h-[38px] px-3.5 border border-[#e0ddd6] rounded-[10px] bg-white text-[#888] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Prev
-          </button>
-
-          <div class="flex items-center gap-1 mx-1">
-            <button class="w-[38px] h-[38px] rounded-[10px] border-[1.5px] border-[#e8341c] bg-[#e8341c] text-white text-[13px] font-semibold cursor-pointer">1</button>
-            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">2</button>
-            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">3</button>
-            <span class="w-[38px] h-[38px] flex items-center justify-center text-[#bbb] text-[13px] tracking-wider">···</span>
-            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">11</button>
-            <button class="w-[38px] h-[38px] rounded-[10px] border border-[#e0ddd6] bg-white text-[#555] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">12</button>
-          </div>
-
-          <button class="flex items-center gap-1.5 h-[38px] px-3.5 border border-[#e0ddd6] rounded-[10px] bg-white text-[#333] text-[13px] font-medium hover:border-[#e8341c]/40 hover:text-[#e8341c] transition-colors cursor-pointer">
-            Next
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-
-        </div>
-      </div>
+    <div id="load-more-container" class="max-w-[1400px] mt-8 mx-auto pb-12 flex flex-col items-center gap-3">
+      <button
+        id="load-more-btn"
+        class="group flex items-center gap-2.5 h-[44px] px-8 border border-[#e0ddd6] rounded-[12px] bg-white text-[#333] text-[13px] font-semibold hover:border-[#e8341c]/50 hover:text-[#e8341c] hover:bg-[#fff5f3] transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+      >
+        <i class="fa-solid fa-chevron-down text-[11px] group-hover:translate-y-0.5 transition-transform duration-200"></i>
+        Load More Startups
+      </button>
+      <p id="load-more-status" class="text-[11px] text-gray-400 font-medium" style="font-family:'Geist Mono',monospace;"></p>
     </div>
     
   </section>

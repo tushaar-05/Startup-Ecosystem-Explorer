@@ -1,6 +1,6 @@
 import { PH_TOKEN, API_URL } from './config.js'
 
-async function fetchData() {
+async function fetchData(after = null) {
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -11,7 +11,7 @@ async function fetchData() {
       body: JSON.stringify({
         query: `
           query Posts($after: String) {
-            posts(order: RANKING, first: 30, after: $after) {
+            posts(order: RANKING, first: 20, after: $after) {
               edges {
                 node {
                   id
@@ -43,6 +43,7 @@ async function fetchData() {
             }
           }
         `,
+        variables: { after }
       })
     });
 

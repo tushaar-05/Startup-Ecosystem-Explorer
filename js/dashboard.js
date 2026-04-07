@@ -17,22 +17,60 @@ async function initDashboard() {
   loading.classList.add('hidden');
   startupList.classList.remove('hidden');
 
-  const posts = data.posts.edges.map(edge => edge.node);
-  // console.log(posts);
+  let buffer = data.posts.edges.map(e => e.node);
+  console.log(data)
+  let cursor = data.posts.pageInfo.endCursor;
+  let hasNextPage = data.posts.pageInfo.hasNextPage;
+  let totalShown = 0;
+  const PAGE_SIZE = 9;
 
-  const totalCountEl = document.getElementById('total-count');
-  if (totalCountEl) {
-    totalCountEl.textContent = data.posts.totalCount || posts.length;
-  }
-  
-  const showingCountEl = document.getElementById('showing-count');
-  if (showingCountEl) {
-    const defaultShowing = Math.min(10, posts.length);
-    showingCountEl.textContent = `1-${defaultShowing}`;
+  const btn = document.getElementById('load-more-btn');
+  const statusEl = document.getElementById('load-more-status');
+  const showingEl = document.getElementById('showing-count');
+  const totalEl = document.getElementById('total-count');
+
+  renderSpotlight(buffer.shift());
+  if (totalEl) {
+    if (hasNextPage) {
+      totalEl.textContent = '50+';
+    } else {
+      totalEl.textContent = buffer.length + 1;
+    }
   }
 
-  renderSpotlight(posts[0]);
-  renderStartups(posts.slice(1, 10));
+  async function loadMore() {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[11px]"></i> Loading…';
+
+    if (buffer.length < PAGE_SIZE && hasNextPage) {
+      const more = await fetchData(cursor);
+      if (more) {
+        buffer = buffer.concat(more.posts.edges.map(e => e.node));
+        cursor = more.posts.pageInfo.endCursor;
+        hasNextPage = more.posts.pageInfo.hasNextPage;
+        if (totalEl) totalEl.textContent = hasNextPage ? '50+' : totalShown + buffer.length + 1;
+      }
+    }
+
+    const batch = buffer.splice(0, PAGE_SIZE);
+    appendStartups(batch, totalShown);
+    totalShown += batch.length;
+
+    if (showingEl) showingEl.textContent = `1-${totalShown + 1}`;
+
+    if (buffer.length === 0 && !hasNextPage) {
+      btn.style.display = 'none';
+      statusEl.textContent = `All ${totalShown + 1} startups loaded`;
+      if (totalEl) totalEl.textContent = totalShown + 1;
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-chevron-down text-[11px]"></i> Load More Startups';
+    }
+  }
+
+  await loadMore();
+
+  btn.addEventListener('click', loadMore);
 }
 
 
@@ -118,13 +156,12 @@ function renderSpotlight(post) {
   `;
 }
 
-function renderStartups(posts) {
-  console.log(posts);
+function appendStartups(posts, rank = 0) {
   const list = document.getElementById('listBottom');
-  list.innerHTML = posts.map((post, index) => `
+  list.insertAdjacentHTML('beforeend', posts.map((post, index) => `
     <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
       
-      <div class="text-gray-400 font-bold w-6 shrink-0 text-base text-center">#${index + 2}</div>
+      <div class="text-gray-400 font-bold w-6 shrink-0 text-base text-center">#${rank + index + 2}</div>
 
       <div class="w-12 h-12 rounded-xl overflow-hidden border border-gray-100 shrink-0">
         <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover">
@@ -189,7 +226,7 @@ function renderStartups(posts) {
       </div>
 
     </div>
-  `).join('');
+  `).join(''));
 }
 
 
