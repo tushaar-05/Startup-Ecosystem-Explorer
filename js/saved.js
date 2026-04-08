@@ -20,33 +20,49 @@ function renderSaved() {
   }
 
   noSavedEl?.classList.add('hidden');
-  savedList.innerHTML = saved.map((post, index) => `
-    <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
-      <div class="w-12 h-12 rounded-xl overflow-hidden border border-gray-100 shrink-0">
-        <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover">
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 flex-wrap mb-0.5">
-          <span class="font-bold text-gray-900 text-base">${post.name}</span>
-          ${post.commentsCount >= 20 ? `<span class="text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2 py-0.5 font-semibold tracking-wide uppercase"><i class="fa-solid fa-fire"></i> Trending</span>` : ''}
+  savedList.innerHTML = saved.map((post, index) => {
+    const isTrending = post.commentsCount >= 20;
+    const sector = post.topics?.edges[0]?.node.name || 'Other';
+    
+    return `
+      <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 rounded-xl overflow-hidden border border-gray-100 shrink-0">
+          <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover">
         </div>
-        <p class="text-[11px] text-gray-400 font-medium mb-1.5">Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span></p>
-        <p class="text-gray-500 text-sm mb-2">${post.description ?? post.tagline ?? ''}</p>
-        <div class="flex items-center gap-2.5 text-xs text-gray-400 flex-wrap">
-          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">${post.topics.edges[0]?.node.name || 'Other'}</span>
-          <span class="flex items-center gap-1 text-orange-500 font-semibold"><i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}</span>
-          <span class="text-gray-300">·</span>
-          <span class="text-gray-400">Added on ${new Date().toLocaleDateString()}</span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap mb-0.5">
+            <span class="font-bold text-gray-900 text-base">${post.name}</span>
+            ${isTrending ? `
+              <span class="flex items-center gap-1.5 text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2.5 py-0.5 font-bold tracking-wider uppercase">
+                <i class="fa-solid fa-fire text-[9px]"></i> TRENDING
+              </span>
+            ` : ''}
+          </div>
+          <p class="text-[11px] text-gray-400 font-medium mb-1.5">Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span></p>
+          <p class="text-gray-500 text-sm mb-2.5 leading-snug truncate-2-lines">${post.tagline || post.description || ''}</p>
+          <div class="flex items-center gap-3 text-[11px] text-gray-400 flex-wrap">
+            <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-semibold">${sector}</span>
+            <span class="flex items-center gap-1 text-orange-500 font-bold">
+              <i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}
+            </span>
+            <span class="flex items-center gap-1 font-medium">
+              <i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}
+            </span>
+            <span class="text-gray-300 mx-0.5">·</span>
+            <span class="font-medium">Added on ${new Date().toLocaleDateString()}</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="removeSaved('${post.id}')" class="flex items-center gap-1.5 text-red-500 hover:text-red-700 text-xs font-semibold px-3.5 py-2 rounded-lg border border-red-100 hover:border-red-200 bg-red-50 hover:bg-red-100 transition-all cursor-pointer">
+            <i class="fa-solid fa-trash-can"></i><span>Remove</span>
+          </button>
+          <a href="${post.url}" target="_blank" class="flex items-center gap-1 text-white text-xs font-semibold px-3.5 py-2 rounded-lg bg-gray-900 hover:bg-gray-700 transition-all cursor-pointer">
+            View Site <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+          </a>
         </div>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button onclick="removeSaved('${post.id}')" class="flex items-center gap-1.5 text-red-500 hover:text-red-700 text-xs font-semibold px-3.5 py-2 rounded-lg border border-red-100 hover:border-red-200 bg-red-50 hover:bg-red-100 transition-all cursor-pointer">
-          <i class="fa-solid fa-trash-can"></i><span>Remove</span>
-        </button>
-        <a href="${post.url}" target="_blank" class="flex items-center gap-1.5 text-white text-xs font-semibold px-3.5 py-2 rounded-lg bg-gray-900 hover:bg-gray-700 transition-all cursor-pointer">View Site <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i></a>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 window.removeSaved = function(postId) {

@@ -187,52 +187,102 @@ function updateView() {
 
 function renderSpotlight(post) {
   if (!post || !spotlight) return;
-  const sector = post.topics.edges[0]?.node.name || 'Other';
-  const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
-  const isSaved = saved.some(s => s.id === post.id);
+  const sector = post.topics?.edges[0]?.node.name || 'Other';
+  const savedItems = JSON.parse(localStorage.getItem('savedStartups') || '[]');
+  const isSaved = savedItems.some(s => s.id === post.id);
+  const isTrending = post.commentsCount >= 20;
 
   spotlight.innerHTML = `
-    <div class="flex-shrink-0 w-[72px] h-[72px] rounded-[14px] border border-white/10 bg-[#242424] overflow-hidden">
+    <div class="flex-shrink-0 w-[84px] h-[84px] rounded-[18px] border border-white/10 bg-[#242424] overflow-hidden">
       <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover"/>
     </div>
-    <div class="flex flex-col gap-3 flex-1">
-      <div class="flex flex-col gap-1">
-        <div class="flex items-center gap-3 text-white">
-          <span class="text-lg font-bold">${post.name}</span>
-          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2 py-0.5 text-[10px]">${sector}</span>
+    <div class="flex flex-col gap-3.5 flex-1">
+      <div class="flex flex-col gap-1.5">
+        <div class="flex items-center gap-3.5 text-white flex-wrap">
+          <span class="text-xl font-bold">${post.name}</span>
+          <span class="bg-violet-500/10 text-violet-400 border border-violet-500/20 rounded-full px-3 py-0.5 text-[11px] font-semibold tracking-wide uppercase">${sector}</span>
+          ${isTrending ? `
+            <span class="flex items-center gap-1.5 text-[10px] bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-full px-2.5 py-0.5 font-bold tracking-widest uppercase">
+              <i class="fa-solid fa-fire text-[9px]"></i> TRENDING
+            </span>
+          ` : ''}
         </div>
-        <p class="text-white/35 text-[11px]">Founded by <span class="text-white/55">${post.user.name}</span></p>
+        <p class="text-white/35 text-[11px] font-medium tracking-wide">Founded by <span class="text-white/55 font-semibold">${post.user.name}</span></p>
       </div>
-      <p class="text-white/55 text-sm">${post.tagline || post.description.substring(0, 100) + '...'}</p>
+      <p class="text-white/55 text-sm leading-relaxed max-w-[850px]">${post.tagline || post.description}</p>
+      
+      <div class="flex items-center gap-3 text-xs">
+        <div class="flex items-center gap-1.5 bg-orange-500/10 border border-orange-500/20 rounded-lg px-2.5 py-1">
+          <span class="text-orange-400 font-bold flex items-center gap-1"><i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1">
+          <span class="text-white/40 font-medium flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}</span>
+        </div>
+      </div>
     </div>
-    <div class="flex gap-3 items-center">
-      <button onclick="toggleSave('${post.id}')" class="save-btn-${post.id} flex items-center gap-1.5 bg-transparent text-white/65 hover:text-white text-sm px-4 py-2 rounded-xl border border-white/10 transition-colors">
-        <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i> ${isSaved ? 'Saved' : 'Save'}
+    <div class="flex gap-4 items-center">
+      <button onclick="toggleSave('${post.id}')" class="save-btn-${post.id} flex items-center gap-2 bg-transparent text-white/65 hover:text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl border border-white/10 hover:border-white/25 transition-all cursor-pointer">
+        <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i> <span>${isSaved ? 'Saved' : 'Save'}</span>
       </button>
-      <a href="${post.url}" target="_blank" class="bg-[#FF3800] text-white text-sm px-4 py-2 rounded-xl">View Site</a>
+      <a href="${post.url}" target="_blank" class="bg-[#FF3800] hover:bg-[#ff5520] text-white text-[13px] font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-orange-900/20">View Site</a>
     </div>
   `;
 }
 
 function appendStartups(posts, rankStart = 0) {
   if (!listBottom) return;
-  const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
+  const savedItems = JSON.parse(localStorage.getItem('savedStartups') || '[]');
   
   listBottom.insertAdjacentHTML('beforeend', posts.map((post, index) => {
-    const isSaved = saved.some(s => s.id === post.id);
+    const isNowSaved = savedItems.some(s => s.id === post.id);
+    const sector = post.topics?.edges[0]?.node.name || 'Other';
+    const isTrending = post.commentsCount >= 20;
+
     return `
       <div class="card bg-white rounded-xl border border-gray-200 px-6 py-5 flex items-center gap-5 hover:shadow-md transition-shadow">
-        <div class="text-gray-400 font-bold w-6 text-center">#${rankStart + index + 2}</div>
-        <img src="${post.thumbnail.url}" alt="${post.name}" class="w-12 h-12 rounded-xl object-cover">
-        <div class="flex-1">
-          <div class="font-bold text-gray-900">${post.name}</div>
-          <p class="text-gray-500 text-sm">${post.tagline || post.description?.substring(0, 60) + '...'}</p>
+        <div class="text-gray-400 font-bold w-6 text-center text-sm">#${rankStart + index + 2}</div>
+        
+        <div class="w-12 h-12 rounded-xl border border-gray-100 overflow-hidden shrink-0">
+          <img src="${post.thumbnail.url}" alt="${post.name}" class="w-full h-full object-cover">
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="toggleSave('${post.id}')" class="save-btn-${post.id} flex items-center gap-1.5 text-gray-500 hover:text-gray-800 text-xs font-semibold px-3 py-2 rounded-lg border border-gray-200 bg-white">
-            <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i><span>${isSaved ? 'Saved' : 'Save'}</span>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap mb-0.5">
+            <span class="font-bold text-gray-900 text-base">${post.name}</span>
+            ${isTrending ? `
+              <span class="flex items-center gap-1.5 text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2.5 py-0.5 font-bold tracking-wider uppercase">
+                <i class="fa-solid fa-fire text-[9px]"></i> TRENDING
+              </span>
+            ` : ''}
+          </div>
+          
+          <p class="text-[11px] text-gray-400 font-medium mb-1.5">
+            Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span>
+          </p>
+          
+          <p class="text-gray-500 text-sm leading-snug mb-2.5 truncate-2-lines">${post.tagline || post.description || ''}</p>
+          
+          <div class="flex items-center gap-3 text-[11px] text-gray-400 flex-wrap">
+            <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-semibold">${sector}</span>
+            <span class="flex items-center gap-1 text-orange-500 font-bold">
+              <i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}
+            </span>
+            <span class="flex items-center gap-1 font-medium">
+              <i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}
+            </span>
+            <span class="text-gray-300 mx-0.5">·</span>
+            <span class="font-medium">${new Date(post.createdAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="toggleSave('${post.id}')" class="save-btn-${post.id} flex items-center gap-1.5 text-gray-500 hover:text-gray-800 text-xs font-semibold px-3.5 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-all cursor-pointer">
+            <i class="${isNowSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+            <span>${isNowSaved ? 'Saved' : 'Save'}</span>
           </button>
-          <a href="${post.url}" target="_blank" class="text-white text-xs font-semibold px-3 py-2 rounded-lg bg-gray-900">Details</a>
+          <a href="${post.url}" target="_blank" class="flex items-center gap-1 text-white text-xs font-semibold px-3.5 py-2 rounded-lg bg-gray-900 hover:bg-gray-700 transition-all cursor-pointer">
+            Details <i class="fa-solid fa-arrow-right text-[10px] ml-0.5"></i>
+          </a>
         </div>
       </div>
     `;
