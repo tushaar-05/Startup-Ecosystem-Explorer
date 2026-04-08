@@ -9,11 +9,19 @@ const btn = document.getElementById('load-more-btn');
 const statusEl = document.getElementById('load-more-status');
 const showingEl = document.getElementById('showing-count');
 const totalEl = document.getElementById('total-count');
+const sectorFilter = document.getElementById('sector-filter');
+const sortSelect = document.getElementById('sort-select');
+const scoreSlider = document.getElementById('score-slider');
+const minScoreValue = document.getElementById('min-score-value');
+
 
 let allStartups = [];
 let displayedStartups = [];
 let currentSpotlight = null;
 let searchQuery = "";
+let selectedSector = "";
+let selectedSort = "score-desc";
+let minScore = 0;
 let cursor = null;
 let hasNextPage = true;
 const PAGE_SIZE = 9;
@@ -40,15 +48,40 @@ async function initDashboard() {
 
   displayedStartups = allStartups.splice(0, PAGE_SIZE);
   
+  populateSectors([currentSpotlight, ...displayedStartups, ...allStartups]);
+
   renderSpotlight(currentSpotlight);
   updateView();
 
   btn.addEventListener('click', loadMore);
   searchInput.addEventListener('input', handleSearch);
   
+  sectorFilter?.addEventListener('change', (e) => {
+    selectedSector = e.target.value;
+    updateView();
+  });
+
+  sortSelect?.addEventListener('change', (e) => {
+    selectedSort = e.target.value;
+    updateView();
+  });
+
+  scoreSlider?.addEventListener('input', (e) => {
+    minScore = parseInt(e.target.value);
+    if (minScoreValue) minScoreValue.textContent = minScore;
+    updateView();
+  });
+  
   document.getElementById('reset-filters')?.addEventListener('click', () => {
     searchInput.value = '';
     searchQuery = '';
+    sectorFilter.value = '';
+    selectedSector = '';
+    sortSelect.value = 'score-desc';
+    selectedSort = 'score-desc';
+    scoreSlider.value = 0;
+    minScore = 0;
+    if (minScoreValue) minScoreValue.textContent = '0';
     updateView();
   });
 }
@@ -69,6 +102,7 @@ async function loadMore() {
   const nextBatch = allStartups.splice(0, PAGE_SIZE);
   displayedStartups = displayedStartups.concat(nextBatch);
   
+  populateSectors([currentSpotlight, ...displayedStartups, ...allStartups]);
   updateView();
 
   if (allStartups.length === 0 && !hasNextPage) {
@@ -91,54 +125,82 @@ function handleSearch(e) {
 }
 
 function updateView() {
+  let combined = [currentSpotlight, ...displayedStartups, ...allStartups].filter(Boolean);
+  
   if (searchQuery) {
-    const filtered = displayedStartups.concat(allStartups).filter(post => 
+    combined = combined.filter(post => 
       post.name?.toLowerCase().includes(searchQuery) ||
       post.tagline?.toLowerCase().includes(searchQuery) ||
       post.description?.toLowerCase().includes(searchQuery) ||
       post.user.name?.toLowerCase().includes(searchQuery)
     );
-    
-    const spotlightMatches = currentSpotlight && (
-      currentSpotlight.name?.toLowerCase().includes(searchQuery) ||
-      currentSpotlight.tagline?.toLowerCase().includes(searchQuery) ||
-      currentSpotlight.description?.toLowerCase().includes(searchQuery)
-    );
+  }
 
+  if (selectedSector) {
+    combined = combined.filter(post => 
+      post.topics.edges.some(e => e.node.name === selectedSector)
+    );
+  }
+
+  if (minScore > 0) {
+    combined = combined.filter(post => post.votesCount >= minScore);
+  }
+
+  combined.sort((a, b) => {
+    switch (selectedSort) {
+      case 'score-desc': return b.votesCount - a.votesCount;
+      case 'score-asc': return a.votesCount - b.votesCount;
+      case 'newest': return new Date(b.createdAt) - new Date(a.createdAt);
+      case 'oldest': return new Date(a.createdAt) - new Date(b.createdAt);
+      case 'az': return a.name.localeCompare(b.name);
+      case 'za': return b.name.localeCompare(a.name);
+      default: return 0;
+    }
+  });
+
+  const isFiltered = searchQuery || selectedSector || minScore > 0;
+
+  if (isFiltered) {
     listBottom.innerHTML = '';
-    if (filtered.length === 0 && !spotlightMatches) {
-        document.getElementById('no-results').classList.remove('hidden');
-        spotlight.style.display = 'none';
+    spotlight.style.display = 'none';
+    
+    if (combined.length === 0) {
+      document.getElementById('no-results').classList.remove('hidden');
     } else {
-        document.getElementById('no-results').classList.add('hidden');
-        if (spotlightMatches) {
-            spotlight.style.display = 'flex';
-            renderSpotlight(currentSpotlight);
-        } else {
-            spotlight.style.display = 'none';
-        }
-        appendStartups(filtered, 0);
+      document.getElementById('no-results').classList.add('hidden');
+      appendStartups(combined, -1);
     }
 
     btn.style.display = 'none';
     statusEl.style.display = 'none';
     if (showingEl) showingEl.parentElement.style.display = 'none';
   } else {
-
     document.getElementById('no-results').classList.add('hidden');
     spotlight.style.display = 'flex';
     renderSpotlight(currentSpotlight);
     listBottom.innerHTML = '';
-    appendStartups(displayedStartups, 0);
+    
+    let standardList = [...displayedStartups];
+    standardList.sort((a, b) => {
+      switch (selectedSort) {
+        case 'score-desc': return b.votesCount - a.votesCount;
+        case 'score-asc': return a.votesCount - b.votesCount;
+        case 'az': return a.name.localeCompare(b.name);
+        case 'za': return b.name.localeCompare(a.name);
+        default: return 0;
+      }
+    });
+
+    appendStartups(standardList, 0);
     
     btn.style.display = (allStartups.length > 0 || hasNextPage) ? 'flex' : 'none';
     statusEl.style.display = 'block';
     if (showingEl) {
-        showingEl.parentElement.style.display = 'block';
-        showingEl.textContent = `1-${displayedStartups.length + 1}`;
+      showingEl.parentElement.style.display = 'block';
+      showingEl.textContent = `1-${displayedStartups.length + 1}`;
     }
     if (totalEl) {
-        totalEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
+      totalEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
     }
   }
 }
@@ -205,7 +267,7 @@ function appendStartups(posts, rankStart = 0) {
           ${post.commentsCount >= 20 ? `<span class="text-[10px] bg-orange-50 text-orange-500 border border-orange-200 rounded-full px-2 py-0.5 font-semibold tracking-wide uppercase"><i class="fa-solid fa-fire"></i> Trending</span>` : ''}
         </div>
         <p class="text-[11px] text-gray-400 font-medium mb-1.5">Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span></p>
-        <p class="text-gray-500 text-sm mb-2 line-clamp-1">${post.description ?? post.tagline ?? ''}</p>
+        <p class="text-gray-500 text-sm mb-2">${post.description ?? post.tagline ?? ''}</p>
         <div class="flex items-center gap-2.5 text-xs text-gray-400 flex-wrap">
           <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">${post.topics.edges[0]?.node.name || 'Other'}</span>
           <span class="flex items-center gap-1 text-orange-500 font-semibold"><i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}</span>
@@ -223,3 +285,21 @@ function appendStartups(posts, rankStart = 0) {
 }
 
 initDashboard();
+
+function populateSectors(posts) {  
+  const currentSelection = selectedSector;
+  const sectors = new Set();
+  
+  posts.forEach(post => {
+    if (post && post.topics) {
+      post.topics.edges.forEach(edge => {
+        sectors.add(edge.node.name);
+      });
+    }
+  });
+
+  const sortedSectors = Array.from(sectors).sort();
+  
+  sectorFilter.innerHTML = '<option value="">All Sectors</option>' + 
+    sortedSectors.map(s => `<option value="${s}" ${s === currentSelection ? 'selected' : ''}>${s}</option>`).join('');
+}
