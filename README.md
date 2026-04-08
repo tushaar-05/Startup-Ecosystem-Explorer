@@ -56,19 +56,6 @@ query Posts($after: String) {
 }
 ```
 
-### Fields Used Per Post
-| `id` -> Unique identifier for each startup/post
-| `name` -> Startup name displayed on cards
-| `tagline` -> One-line description shown on each card
-| `slug` -> Used to build the Product Hunt profile URL
-| `url` -> External link to the startup's website
-| `votesCount` -> Upvote score used for sorting and traction bar
-| `commentsCount -> Engagement metric shown on cards
-| `createdAt` -> Timestamp used to compute post age and sorting
-| `topics` -> Industry categories used for sector filtering
-| `thumbnail.url -> Product logo/image displayed on each card
-| `user` -> Founder name, username, and headline
-| `description` -> Full product description for the detail/compare view
 
 ### Authentication
 The API requires a Developer Token (Bearer token). This is stored in `config.js` as `PH_TOKEN` and passed in the `Authorization` header of every request.
@@ -90,26 +77,23 @@ The API supports cursor-based pagination via `pageInfo.endCursor` and the `$afte
 
 ### Interactive Features
 - **Bookmark / Save** — star icon on each card to save startups; saved list persists using `localStorage`
-- **Compare Mode** — select up to 2 startups and view them side by side in a comparison panel (name, tagline, votes, comments, topics, description)
 - **Score Bar** — visual progress bar on each card representing relative traction (votes relative to the highest-voted post in the current fetch)
-- **Compare** - Can compare any two startups side by side.
 
 ### Bonus Features
 - **Debounced Search** — search input waits 300ms after the user stops typing before filtering, avoiding unnecessary re-renders on every keystroke
 - **Pagination** — results split into pages of 10–20 startups using cursor-based pagination (`pageInfo.hasNextPage` + `endCursor`)
 - **Dark / Light Mode Toggle** — theme preference saved to `localStorage`
 - **Spotlight Card** — highest-voted startup of the current fetch is highlighted at the top of the dashboard
-- **Quick Filters** — one-click preset filters (e.g. Trending, New This Week, Votes > 200) for faster exploration
 
 ---
 
 ## Tech Stack
-| HTML5 -> Page structure and semantic markup
-| CSS3 / TailwindCSS -> Styling, layout (Flexbox & CSS Grid), responsive
-| Vanilla JavaScript ES6+ -> API calls, DOM manipulation, all logic
-| Product Hunt GraphQL API -> Live startup data source
-| `localStorage` -> Persisting bookmarks and theme preferences
-| Google Fonts -> Typography
+- HTML5 -> Page structure and semantic markup
+- CSS3 / TailwindCSS -> Styling, layout (Flexbox & CSS Grid), responsive
+- Vanilla JavaScript ES6+ -> API calls, DOM manipulation, all logic
+- Product Hunt GraphQL API -> Live startup data source
+- `localStorage` -> Persisting bookmarks and theme preferences
+- Google Fonts -> Typography
 
 No frameworks or build tools are used. This is a pure HTML/CSS/JS project.
 
@@ -143,7 +127,6 @@ This project requires no installation, build step, or server. It runs entirely i
    - Double-click the file in your file explorer, or
    - Use the **Live Server** extension in VS Code (recommended for ES module support)
 
-> ⚠️ Because `api.js` uses ES modules (`import`/`export`), the project must be served over HTTP (not opened as a raw file). Use Live Server or any local HTTP server.
 
 ---
 
