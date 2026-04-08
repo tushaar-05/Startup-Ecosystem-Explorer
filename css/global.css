@@ -3,11 +3,14 @@
 
 :root {
   /* Light theme */
-  --primary: #000000;
+  --primary: #1a1a1a; 
   --secondary: #ffffff;
   --accent: #FF3800;
-  --background: #F6F6EE;
-  --text: #333333;
+  --background: #f8f9f5;
+  --text: #222222; 
+
+  --border: #e0e0e0;
+  --muted: #6b6b6b;
 
   /* Dark theme */
   --dark-primary: #ffffff;
@@ -18,7 +21,7 @@
 
   /* Font */
   --font-primary: 'TASA Orbiter', sans-serif;
-  --font-secondary: 'Geist Mono', serif;
+  --font-secondary: 'Geist Mono', monospace;
 }
 
 body{
@@ -650,3 +653,10 @@ html, body {
   }
 }
 
+/* Simple Light Mode */
+body.light-mode { background: #fcfcf9 !important; color: #111 !important; }
+body.light-mode nav { background: #fff !important; border-bottom: 1px solid #eee !important; }
+body.light-mode .hero-bg { background: #fcfcf9 !important; background-image: none !important; }
+body.light-mode h1, body.light-mode p, body.light-mode span, body.light-mode a { color: #111 !important; opacity: 1 !important; }
+body.light-mode .search-input, body.light-mode select { background: #fff !important; color: #000 !important; border: 1px solid #ccc !important; }
+body.light-mode .card, body.light-mode #spotlight { background: #fff !important; border: 1px solid #ddd !important; }
