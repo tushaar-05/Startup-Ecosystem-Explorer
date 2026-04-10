@@ -1,50 +1,11 @@
-import { PH_TOKEN, API_URL } from './config.js'
-
 async function fetchData(after = null) {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch('/api/products', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${PH_TOKEN}`
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        query: `
-          query Posts($after: String) {
-            posts(order: RANKING, first: 20, after: $after) {
-              edges {
-                node {
-                  id
-                  name
-                  tagline
-                  slug
-                  url
-                  votesCount
-                  commentsCount
-                  createdAt
-                  topics {
-                    edges {
-                      node {
-                        name
-                        slug
-                      }
-                    }
-                  }
-                  thumbnail { url }
-                  user { name username headline }
-                  description
-                }
-                cursor
-              }
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-            }
-          }
-        `,
-        variables: { after }
-      })
+      body: JSON.stringify({ after })
     });
 
     if (!response.ok) {
