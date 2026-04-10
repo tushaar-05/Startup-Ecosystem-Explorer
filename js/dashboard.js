@@ -16,13 +16,8 @@ const minScoreValue = document.getElementById('min-score-value');
 const themeToggle = document.getElementById('theme-toggle');
 const heroTotalEl = document.getElementById('hero-total-count');
 const heroSavedEl = document.getElementById('hero-saved-count');
-const heroSubtitleEl = document.getElementById('hero-subtitle-count');
-const heroScoreEl = document.getElementById('hero-top-score');
-
-function isSaved(postId) {
-  const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
-  return saved.some(s => s.id === postId);
-}
+const heroTopScoreEl = document.getElementById('hero-top-score');
+const heroSubtitleCount = document.getElementById('hero-subtitle-count');
 
 
 
@@ -62,6 +57,7 @@ async function initDashboard() {
   populateSectors([currentSpotlight, ...displayedStartups, ...allStartups]);
 
   renderSpotlight(currentSpotlight);
+  updateHeroStats();
   updateView();
 
   btn.addEventListener('click', loadMore);
@@ -99,6 +95,26 @@ async function initDashboard() {
   initTheme();
 }
 
+function updateHeroStats() {
+  const combined = [currentSpotlight, ...displayedStartups, ...allStartups].filter(Boolean);
+  
+  // Update Total Count
+  if (heroTotalEl) heroTotalEl.textContent = hasNextPage ? `${combined.length}+` : combined.length;
+  if (heroSubtitleCount) heroSubtitleCount.textContent = hasNextPage ? "50+" : combined.length;
+
+  // Update Top Score
+  if (heroTopScoreEl && combined.length > 0) {
+    const maxScore = Math.max(...combined.map(p => p.votesCount || 0));
+    heroTopScoreEl.textContent = maxScore;
+  }
+
+  // Update Saved Count
+  if (heroSavedEl) {
+    const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
+    heroSavedEl.textContent = saved.length;
+  }
+}
+
 function initTheme() {
   const theme = localStorage.getItem('theme');
   if (theme === 'light') {
@@ -130,6 +146,7 @@ async function loadMore() {
   displayedStartups = displayedStartups.concat(nextBatch);
   
   populateSectors([currentSpotlight, ...displayedStartups, ...allStartups]);
+  updateHeroStats();
   updateView();
 
   if (allStartups.length === 0 && !hasNextPage) {
@@ -165,7 +182,7 @@ function updateView() {
 
   if (selectedSector) {
     combined = combined.filter(post => 
-      post.topics?.edges.some(e => e.node.name === selectedSector)
+      post.topics.edges.some(e => e.node.name === selectedSector)
     );
   }
 
@@ -229,28 +246,17 @@ function updateView() {
     if (totalEl) {
       totalEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
     }
-
-    if (heroTotalEl) {
-      heroTotalEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
-    }
-    if (heroSubtitleEl) {
-      heroSubtitleEl.textContent = hasNextPage ? '50+' : (displayedStartups.length + allStartups.length + 1);
-    }
   }
+}
 
-  const savedCount = JSON.parse(localStorage.getItem('savedStartups') || '[]').length;
-  if (heroSavedEl) heroSavedEl.textContent = savedCount;
-
-  const allReady = [currentSpotlight, ...displayedStartups, ...allStartups].filter(Boolean);
-  if (allReady.length > 0 && heroScoreEl) {
-    const topScore = Math.max(...allReady.map(s => s.votesCount || 0));
-    heroScoreEl.textContent = topScore;
-  }
+function isSaved(postId) {
+  const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
+  return saved.some(s => s.id === postId);
 }
 
 function renderSpotlight(post) {
   if (!post) return;
-  const sector = post.topics?.edges[0]?.node.name || 'Other';
+  const sector = post.topics.edges[0]?.node.name || 'Other';
   const shortDescription = post.description?.length > 250
       ? post.description.substring(0, 250) + "..."
       : post.description ?? post.tagline ?? '';
@@ -312,7 +318,7 @@ function appendStartups(posts, rankStart = 0) {
         <p class="text-[11px] text-gray-400 font-medium mb-1.5">Founded by <span class="text-gray-600 font-semibold">${post.user.name}</span></p>
         <p class="text-gray-500 text-sm mb-2">${post.description ?? post.tagline ?? ''}</p>
         <div class="flex items-center gap-2.5 text-xs text-gray-400 flex-wrap">
-          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">${post.topics?.edges[0]?.node.name || 'Other'}</span>
+          <span class="bg-violet-50 text-violet-600 border border-violet-200 rounded-full px-2.5 py-0.5 font-medium">${post.topics.edges[0]?.node.name || 'Other'}</span>
           <span class="flex items-center gap-1 text-orange-500 font-semibold"><i class="fa-solid fa-angles-up text-[10px]"></i> ${post.votesCount}</span>
           <span class="flex items-center gap-1 text-gray-500 font-semibold"><i class="fa-regular fa-comment text-[10px]"></i> ${post.commentsCount}</span>
           <span class="text-gray-300">·</span>
@@ -351,17 +357,26 @@ function populateSectors(posts) {
 window.toggleSave = function(postId) {
   const saved = JSON.parse(localStorage.getItem('savedStartups') || '[]');
   const idx = saved.findIndex(s => s.id === postId);
-  
+
   if (idx > -1) {
     saved.splice(idx, 1);
   } else {
     const all = [currentSpotlight, ...displayedStartups, ...allStartups].filter(Boolean);
-    const startup = all.find(s => s.id === postId);
-    if (startup) {
-      saved.push(startup);
-    }
+    const post = all.find(p => p.id === postId);
+    if (post) saved.push(post);
   }
-  
+
   localStorage.setItem('savedStartups', JSON.stringify(saved));
-  updateView();
+  updateHeroStats();
+
+  // Update all matching save buttons in the DOM without a full re-render
+  const nowSaved = saved.some(s => s.id === postId);
+  document.querySelectorAll(`.save-btn-${postId}`).forEach(btn => {
+    const icon = btn.querySelector('i');
+    const span = btn.querySelector('span');
+    if (icon) icon.className = `${nowSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark`;
+    if (span) span.textContent = nowSaved ? 'Saved' : 'Save';
+    // spotlight button has no <span>, text is mixed content
+    if (!span) btn.innerHTML = `<i class="${nowSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i> ${nowSaved ? 'Saved' : 'Save'}`;
+  });
 };
