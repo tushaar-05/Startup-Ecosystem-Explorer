@@ -15,7 +15,8 @@ async function fetchData(after = null) {
     const result = await response.json();
 
     if (result.errors) {
-      console.error('GraphQL errors:', result.errors);
+      console.error('GraphQL Errors from Server:', result.errors);
+      // Optional: alert(result.errors[0].message); 
       return null;
     }
 
@@ -25,5 +26,6 @@ async function fetchData(after = null) {
     console.error('Error fetching data:', error);
   }
 }
+
 
 export { fetchData }

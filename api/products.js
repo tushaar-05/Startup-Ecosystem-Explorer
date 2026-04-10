@@ -7,12 +7,19 @@ export default async function handler(req, res) {
   const PH_TOKEN = process.env.PH_TOKEN;
   const API_URL = 'https://api.producthunt.com/v2/api/graphql';
 
+  if (!PH_TOKEN) {
+    console.error('Missing PH_TOKEN environment variable');
+    return res.status(500).json({ 
+      errors: [{ message: 'Server configuration error: Missing PH_TOKEN' }] 
+    });
+  }
+
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${PH_TOKEN}`
+        'Authorization': `Bearer ${PH_TOKEN.trim()}`
       },
       body: JSON.stringify({
         query: `
@@ -49,14 +56,16 @@ export default async function handler(req, res) {
             }
           }
         `,
-        variables: { after }
+        variables: { after: after || null }
       })
     });
 
     const result = await response.json();
-    return res.status(200).json(result);
+    return res.status(response.status).json(result);
   } catch (error) {
-    console.error('API Error:', error);
-    return res.status(500).json({ error: 'Failed to fetch data' });
+    console.error('Server side error:', error);
+    return res.status(500).json({ 
+      errors: [{ message: 'Internal server error: ' + error.message }] 
+    });
   }
 }
