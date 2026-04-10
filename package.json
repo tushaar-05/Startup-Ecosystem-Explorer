@@ -1,8 +1,8 @@
 {
   "name": "startupecosystem",
   "version": "1.0.0",
+  "type": "module",
   "description": "A web application to discover, search, filter, and analyse startups from the Product Hunt ecosystem — built using the Product Hunt GraphQL API.",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
